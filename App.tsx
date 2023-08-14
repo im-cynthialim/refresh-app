@@ -3,10 +3,9 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LogInScreen } from './screens/LogIn';
-
-import SignUpScreen  from './screens/SignUp';
-import { TutorialScreen } from './screens/Tutorial';
+import SignUpPage  from './screens/SignUp';
+import LogInScreen from './screens/LogIn';
+// import { LogInScreen } from './screens/Tutorial';
 
 import * as Font from 'expo-font'
 
@@ -47,9 +46,8 @@ export default class App extends React.Component {
           screenOptions = {{
             headerShown: false
           }}>
-          <Stack.Screen name="LogIn" component={LogInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="Tutorial" component={TutorialScreen} />
+          <Stack.Screen name="Signup" component={SignUpPage} />
+          <Stack.Screen name="Login" component={LogInScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );

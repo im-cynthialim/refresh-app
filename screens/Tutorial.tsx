@@ -1,22 +1,20 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TextInput, View, Image, Pressable, Button, PressableProps} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import auth from '@react-native-firebase/auth';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import styles from '../styles/styles';
+import TextLabel from '../styles/props/TextLabel';
 
+export function LogInScreen({ navigation }) { 
 
-export function TutorialScreen({ navigation }) { 
-
+   
     return (
-        <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
-        <Text> hi </Text>
-        <Pressable
-            style={{width: 200, height: 20, backgroundColor: 'blue'}}
-            onPress = {() => navigation.navigate("SignUp")}
-        />
-        </View>
-    )
+     <View>
+
+      <Text> hi </Text>
+    </View>
+    );
   }
 
-  export default {TutorialScreen};
+  export default {LogInScreen};

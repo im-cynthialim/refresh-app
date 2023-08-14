@@ -1,8 +1,6 @@
-import { auth } from '../firebase'
-import { useNavigation } from '@react-navigation/core'
-import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react'
-import { TextInput, Text, Pressable, View, Image} from 'react-native'
+import { TextInput, Text, Pressable, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -10,29 +8,29 @@ import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebas
 import TextLabel from '../styles/props/TextLabel';
 import styles from '../styles/styles';
 
-export function LogInScreen({navigation}) {
-// const LogInScreen = () => {
+function LogInScreen({ navigation }) {
+  // const LogInScreen = () => {
 
   const auth = getAuth();
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  // const navigation = useNavigation()
 
 
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       navigation.navigate("LogIn")
-  //     }
 
-  //     else {
-  //       navigation.navigate("SignUp")
-  //     }
-  //   })
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigation.navigate("LogIn")
+      }
 
-  //   return unsubscribe
-  // }, [])
+      else {
+        navigation.navigate("SignUp")
+      }
+    })
+
+    return unsubscribe
+  }, [])
 
   const handleLogin = () => {
 
@@ -56,11 +54,11 @@ export function LogInScreen({navigation}) {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#FBFEFB', flex: 1, alignItems: 'center', justifyContent: 'space-evenly' }}>
-        <View style={{gap: 20}}>
-          <Image
-                source = {require('../assets/images/lettucelogo.png')}
-                style={{width: 88, height: 95, marginBottom: 28, alignSelf: 'center'}}
-          /> 
+      <View style={{ gap: 20 }}>
+        <Image
+          source={require('../assets/images/lettucelogo.png')}
+          style={{ width: 88, height: 95, marginBottom: 28, alignSelf: 'center' }}
+        />
         <View>
           <TextLabel label="email" />
 
@@ -126,17 +124,10 @@ export function LogInScreen({navigation}) {
 
         <Text> Not sure how you got here? </Text>
         <Pressable
-          onPress={() => navigation.navigate("SignUp")}>
+          onPress={() => navigation.navigate("Signup")}>
           <Text style={[styles.textDefault, { textDecorationLine: 'underline' }]}>Sign up now</Text>
         </Pressable>
       </View>
-
-
-
-
-
-
-
     </SafeAreaView>
   );
 }

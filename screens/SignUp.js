@@ -1,7 +1,8 @@
 import { auth } from '../firebase'
 import {getAuth, onAuthStateChanged, createUserWithEmailAndPassword} from "firebase/auth";
-import { useNavigation } from '@react-navigation/core'
-import React, { useEffect, useState } from 'react'
+// import { useNavigation } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import {StyleSheet, Text, TextInput, View, Image, Pressable, Button, PressableProps} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -125,7 +126,7 @@ const SignUpScreen = () => {
 
           <View style={{ flexDirection: 'row' }}>
               <Pressable
-                  onPress={() => navigation.navigate("LogIn")}>
+                  onPress={() => navigation.navigate("Login")}>
                 
                   <Text>
                       <Text> Ended up on the wrong page? </Text>
