@@ -15,7 +15,7 @@ const SignUpScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   
-
+  //test
   const navigation = useNavigation()
 
   useEffect(() => {
