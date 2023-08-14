@@ -1,59 +1,58 @@
+import { auth } from '../firebase'
+import {getAuth, onAuthStateChanged, createUserWithEmailAndPassword} from "firebase/auth";
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import {StyleSheet, Text, TextInput, View, Image, Pressable, Button, PressableProps} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { auth } from '../firebase'
-import {getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
+
 import styles from '../styles/styles';
 import TextLabel from '../styles/props/TextLabel';
 
-
+// export function SignUpScreen() {
 const SignUpScreen = () => {
 
-  const auth = getAuth();
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+    const auth = getAuth();
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    
+
+    const navigation = useNavigation();
+
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          navigation.replace("LogIn")
+        }
+
+        else {
+          navigation.navigate("LogIn")
+        }
+      })
+
+      return unsubscribe
+    }, [])
+
+    const handleSignUp = () => {
+        createUserWithEmailAndPassword(auth, email, password)
+        .then(userCredentials => {
+          const user = userCredentials.user;
+          // user.displayName = username;
+          console.log('Registered with:', user.email);
+          navigation.navigate("Tutorial")
+        })
+        .catch(error => alert(error.message))
+
+      
+    }
   
-
-  const navigation = useNavigation()
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigation.replace("LogInScreen")
-      }
-    })
-
-    return unsubscribe
-  }, [])
-
-  const handleSignUp = () => {
-      createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-        // user.displayName = username;
-        console.log('Registered with:', user.email);
-        navigation.navigate("Tutorial")
-      })
-      .catch(error => alert(error.message))
-
-     
-  }
-
-  const handleLogin = () => {
-
-      signInWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log('Logged in with:', user.email);
-      })
-      .catch(error => alert(error.message))
-  }
+ 
 
 
   return (
     <SafeAreaView style={{ backgroundColor: '#FBFEFB', flex: 1, alignItems: 'center', justifyContent: 'space-evenly' }}>
+
+     
       <Text style={{ fontSize: 23, textAlign: 'center', width: 230 }}>
           <Text style={[styles.regularFont, {color: '#052B2D'}]}>Start your adventure with </Text>
           <Text style={[styles.textDefault,  {color: '#052B2D'}]}>Refresh.</Text>
@@ -137,7 +136,7 @@ const SignUpScreen = () => {
 
 
   </SafeAreaView>
-  )
-}
+  );
+  }
 
 export default SignUpScreen

@@ -69,10 +69,6 @@ const styles = StyleSheet.create({
         borderColor: '#052B2D',
         borderWidth: 1,
       },
-
-      container: {
-        backgroundColor: 'blue',
-      },
 }) 
 
 export default styles
