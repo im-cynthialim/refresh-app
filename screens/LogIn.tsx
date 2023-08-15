@@ -18,19 +18,19 @@ function LogInScreen({ navigation }) {
 
 
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigation.navigate("LogIn")
-      }
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       navigation.replace("Login")
+  //     }
 
-      else {
-        navigation.navigate("SignUp")
-      }
-    })
+  //     else {
+  //       navigation.navigate("Signup")
+  //     }
+  //   })
 
-    return unsubscribe
-  }, [])
+  //   return unsubscribe
+  // }, [])
 
   const handleLogin = () => {
 

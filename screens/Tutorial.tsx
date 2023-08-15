@@ -6,7 +6,7 @@ import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebas
 import styles from '../styles/styles';
 import TextLabel from '../styles/props/TextLabel';
 
-export function LogInScreen({ navigation }) { 
+function TutorialScreen({ navigation }) { 
 
    
     return (
@@ -17,4 +17,4 @@ export function LogInScreen({ navigation }) {
     );
   }
 
-  export default {LogInScreen};
+  export default TutorialScreen;
