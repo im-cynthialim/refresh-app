@@ -94,7 +94,7 @@ export function HomeScreen({navigation}) {
                   height: 17,
                 }}
                 onPress={
-                  () => navigation.navigate('ExpandContainer', {
+                  () => navigation.navigate("ExpandContainer", {
                     itemdata: {item},
                   })
                 }

@@ -7,6 +7,7 @@ import SignUpPage  from './screens/SignUp';
 import LogInScreen from './screens/LogIn';
 import TutorialScreen from './screens/Tutorial';
 import HomeScreen from './screens/Home';
+import ExpandContainerScreen from './screens/ExpandContainer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import * as Font from 'expo-font'
@@ -19,6 +20,14 @@ let customFonts = {
   'Rubik-Medium': require('./styles/fonts/Rubik-Medium.ttf'),
   'Rubik-Regular': require('./styles/fonts/Rubik-Regular.ttf'),
 };
+
+function NewContainerScreen({navigation}) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>NewContainer</Text>
+    </View>
+  );
+}
 
 function AlertsScreen() {
   return (
@@ -194,7 +203,11 @@ export default class App extends React.Component {
           <Stack.Screen name="Signup" component={SignUpPage} />
           <Stack.Screen name="Login" component={LogInScreen} />
           <Stack.Screen name="Tutorial" component={TutorialScreen} />
+          
           <Stack.Screen name="Main" component={MainScreen} />
+          <Stack.Screen name="NewContainer" component={NewContainerScreen} />
+          <Stack.Screen name="ExpandContainer" component={ExpandContainerScreen} />
+
         </Stack.Navigator>
       </NavigationContainer>
     );
