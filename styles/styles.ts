@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#FBFEFB',
       },
+
+      smalltext: {
+        fontSize: 9,
+        color: '#B0B6B3',
+      },
       
       label: {
         fontSize: 14,

@@ -20,7 +20,8 @@
     - fix header height, looks weird
 
 ## Additional:
-
+    
+    - fix isLoggedIn navigation path (e.g. if logged in, show home, else show log in)
     - add sign-in option with email only by sending link to email to login
     - add sign-in option with Google + Facebook as providers
     - Change screen animation

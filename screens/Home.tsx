@@ -141,7 +141,7 @@ export function HomeScreen({navigation}) {
               height: 65,
             }}/>
             <Text style={{color: '#fbfefb'}}> {item} </Text>
-            <Text style={{color: '#fbfefb'}}> expiry date here </Text>
+            <Text style={{color: '#fbfefb'}}>expiry date here</Text>
         </View>
 
       );

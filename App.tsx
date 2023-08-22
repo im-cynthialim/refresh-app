@@ -196,7 +196,7 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
          <Stack.Navigator 
-          initialRouteName="Signup"
+          initialRouteName="Tutorial"
           screenOptions = {{
             headerShown: false
           }}>

@@ -79,51 +79,65 @@ function ExpandContainerScreen({route, navigation}) {
       productlist: string[];
     };
 
-    const renderItem = ({item}: {item: ItemData}) => {
+
+    const renderItem = ({item}: {item: productData}) => {
 
       return (
-        <View style={{backgroundColor: '#052B2D', paddingVertical: 18, borderRadius: 8, paddingHorizontal: 19, marginTop: 9, marginHorizontal: 9, width: 'auto', height: 'auto'}}>
-          <View
-            style = {{
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-            }}>
+        <View>
+            <Text>
+                test
+            </Text>
+            {/* <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <Text>{item.productlist.map((item) => (
+                <Text key={item.index}> {item.product} </Text>
+            ))}
+            </Text>
+            </View> */}
+        </View>
+      );
+    }
+//         <View style={{backgroundColor: '#052B2D', paddingVertical: 18, borderRadius: 8, paddingHorizontal: 19, marginTop: 9, marginHorizontal: 9, width: 'auto', height: 'auto'}}>
+//           <View
+//             style = {{
+//               flexDirection: 'row',
+//               alignItems: 'flex-start',
+//               justifyContent: 'space-between',
+//             }}>
          
-            <Text style={[styles.subtitle, {color: '#FBFEFB'}]}> {item.name}</Text>
-            <Pressable
-              style={{
-                justifyContent: 'center',
-                alignContent: 'center',
-                borderWidth: 1,
-                backgroundColor: '#FBFEFB',
-                borderRadius: 37,
-                width: 25,
-                height: 17,
-              }}
-              onPress={
-                () => navigation.navigate('ExpandContainer')
-              }
-              >
-              <Image
-                source = {require('../assets/images/arrowicon-green.png')}
-                style = {{
-                  alignSelf: 'center',
-                  transform: [{rotateY: '180deg'}],
-                  width: 4.5,
-                  height: 7,
-                }}
-                />
-              </Pressable>
-          </View>
-          <Text style={{color: '#FBFEFB', paddingVertical: 10}}> {item.description}</Text>
-          {/* <ContainerDisplay productlist={item.products}/> */}
+//             <Text style={[styles.subtitle, {color: '#FBFEFB'}]}> {item.name}</Text>
+//             <Pressable
+//               style={{
+//                 justifyContent: 'center',
+//                 alignContent: 'center',
+//                 borderWidth: 1,
+//                 backgroundColor: '#FBFEFB',
+//                 borderRadius: 37,
+//                 width: 25,
+//                 height: 17,
+//               }}
+//               onPress={
+//                 () => navigation.navigate('ExpandContainer')
+//               }
+//               >
+//               <Image
+//                 source = {require('../assets/images/arrowicon-green.png')}
+//                 style = {{
+//                   alignSelf: 'center',
+//                   transform: [{rotateY: '180deg'}],
+//                   width: 4.5,
+//                   height: 7,
+//                 }}
+//                 />
+//               </Pressable>
+//           </View>
+//           <Text style={{color: '#FBFEFB', paddingVertical: 10}}> {item.description}</Text>
+//           {/* <ContainerDisplay productlist={item.products}/> */}
 
           
-        </View>
+//         </View>
 
-      );
-  };
+//       );
+//   };
 
     return (
       <View style={{ 
@@ -137,7 +151,7 @@ function ExpandContainerScreen({route, navigation}) {
             justifyContent: 'flex-start',
             backgroundColor: '#052B2D',
             paddingTop: 10,
-            height: 141,
+            height: 'auto',
             alignSelf: 'stretch',
             marginBottom: 4,
             shadowOffset: {
@@ -266,15 +280,15 @@ function ExpandContainerScreen({route, navigation}) {
             
           </View> 
             
-          <View>
+          <View style={{paddingLeft: 22, paddingVertical: 23}}>
               {/* Container info */}
-              <Text style={[styles.title, styles.textDefault]}> Fridge </Text>
-              <Text style={[styles.description, styles.regularFont]}> Lorem ipsum dolor sit amet, - container desc here, have max # of chars </Text>
+              <Text style={[styles.title, styles.textDefault]}>Fridge </Text>
+              <Text style={[styles.description, styles.regularFont, {width: '80%'}]}>Lorem ipsum dolor sit amet, - container desc here, have max # of chars </Text>
           </View>
         </SafeAreaView>
         <View>
           <FlatList
-          data={itemdata.products}
+          data={DATA}
           renderItem={renderItem}>
 
           </FlatList>
@@ -283,6 +297,7 @@ function ExpandContainerScreen({route, navigation}) {
         </View>
       </View>
     );
+                
 }
 
 
