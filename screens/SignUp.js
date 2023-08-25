@@ -1,5 +1,5 @@
 import { auth } from '../firebase'
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 // import { useNavigation } from '@react-navigation/core';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
@@ -32,15 +32,17 @@ const SignUpScreen = () => {
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-        // user.displayName = username;
-        console.log('Registered with:', user.email);
-        navigation.navigate("Tutorial")
+      .then((userCredential) => {
+        const user = userCredential.user;
+          const userId = user.uid;
+          console.log('Registered with:', user.email);
+          navigation.navigate('Tutorial', {screen: 'ContainerSetup-1', params: {userId: userId}});
+       
       })
+
       .catch(error => alert(error.message))
-
-
+        
+        // user.displayName = username;
   }
 
 

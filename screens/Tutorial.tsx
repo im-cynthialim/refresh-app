@@ -1,16 +1,37 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, View, Image, Pressable, Button, PressableProps, ImageBackground} from 'react-native';
+import {StyleSheet, Text, TextInput, View, Image, Pressable} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, getUser } from "firebase/auth";
 import styles from '../styles/styles';
 import TextLabel from '../styles/props/TextLabel';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { getDatabase, ref, set } from 'firebase/database';
 
 
-function TutorialScreen({ navigation }) { 
+function TutorialScreen({ route, navigation }) { 
 
-  function ContainerSetup1() {
+  
+
+  function ContainerSetup1 ({route, navigation}) {
+    const userId = route.params;
+    const [containerName, setContainerName] = useState('')
+    const db = getDatabase();
+
+    function addContainer (containerName, userId) {
+      // if user has been defined (aka gone through proper signup)
+      if (userId){ 
+        set(ref(db, 'userprofiles/' + JSON.stringify(userId) + '/containers/'), {
+          containerName: containerName
+        });
+      }
+
+      else{
+        navigation.navigate("Login")
+      }
+
+    }
+
     return (
       <SafeAreaView style={{backgroundColor: '#FBFEFB', height: '100%'}}>
         {/* progress bar */}
@@ -63,7 +84,8 @@ function TutorialScreen({ navigation }) {
             <TextInput
               placeholder={'Fridge'}
               placeholderTextColor={'#B0B6B3'}
-              // onChangeText={}
+              value={containerName}
+              onChangeText={text=>setContainerName(text)}
               style={
               [styles.textbox,
                 {
@@ -80,7 +102,7 @@ function TutorialScreen({ navigation }) {
           <View style={{marginTop: 20}}>
             <Pressable
             style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-            onPress={() => "ContainerSetup-1"}
+            onPress={() => addContainer(containerName, userId)}
           >
             <Text
               style={[styles.textDefault, styles.buttonText]}> Next </Text>

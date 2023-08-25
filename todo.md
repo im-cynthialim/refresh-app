@@ -19,6 +19,10 @@
     - convert all images in tab bar to icons: `https://medium.com/bam-tech/add-custom-icons-to-your-react-native-application-f039c244386c`
     - fix header height, looks weird
 
+    Tutorial: 
+    - figure out flow for undefined user(in case Tutorial page beings without signup (can use if statement in signup area?))
+    |_ **fixed** but page animation isn't correct
+
 ## Additional:
     
     - fix isLoggedIn navigation path (e.g. if logged in, show home, else show log in)
@@ -29,6 +33,8 @@
     - Splash screen and app icon
     - Test greater screen sizes (responsive - work with percentages instead)
     - Test border difference with newer phones
+
+
 
     - other languages!
     - Dark theme
@@ -54,7 +60,10 @@
 - new container design
 - tutorial page w container + foods setup
 
+## Notes
 
+- use fb uid for identifying users
+- use fb token id for **VERIFYING** users
 
 
 To update ruby:
