@@ -13,41 +13,79 @@ function TutorialScreen({ navigation }) {
   function ContainerSetup1() {
     return (
       <SafeAreaView style={{backgroundColor: '#FBFEFB', height: '100%'}}>
-        <View style={{alignItems: 'center'}}>
+        {/* progress bar */}
+        <View style={{flexDirection: 'row', paddingTop: 12, justifyContent: 'center', gap: 5}}>
+          <View style={{borderRadius: 64, backgroundColor: '#EDEDED', width: '30%'}}>
+            <View style={{zIndex: 1, borderRadius: 64, backgroundColor: '#052B2D', width: '30%', height: 10}}/>
+          </View>
+          <View style={{borderRadius: 64, backgroundColor: '#EDEDED', width: '30%'}}/>
+          <View style={{borderRadius: 64, backgroundColor: '#EDEDED', width: '30%', height: 10}}/>
+          
+        </View>
+        {/* content */}
+        {/* <View
+        style={{paddingHorizontal: 17, paddingTop: 17}}>
+          <Pressable
+            style={{backgroundColor: 'blue', zIndex: 1}}
+            onPress = {() => "Signup"}>
+            <Image
+              source={require('../assets/images/arrowicon-green.png')}
+              style={{ width: 9, height: 14, marginBottom: 28, alignSelf: 'flex-start'}}
+            />
+          </Pressable>
+
+        </View> */}
+        <View style={{alignItems: 'center', gap: 25, paddingTop: 30}}>
+          <View style={{alignItems: 'center'}}>
           <Text style={[styles.subtitle, styles.textDefault]}>
-            Set up your first container
+            Set up your
+          </Text>
+          <Text style={[styles.subtitle, styles.textDefault, {marginBottom: 10}]}>
+            first container
           </Text>
           <Text style={[styles.smalltext, styles.textDefault]}>
-            This is the location you'll use to store your foods
+            This is the location you'll use to
           </Text>
-          <View style={styles.horizontalRule} />
+          <Text style={[styles.smalltext, styles.textDefault, {marginBottom: 16}]}>
+            store your foods
+          </Text>
 
-          <Text style={[styles.label, styles.textDefault]}>
+          <View style={[styles.horizontalRule]} />
+          </View>
+
+          <View style={{alignItems: 'center'}}>
+          <Text style={[styles.label, styles.textDefault, {marginBottom: 10}]}>
             Choose a name for your container
           </Text>
-          <Text style={[styles.smalltext, styles.textDefault]}>
+          <Text style={[styles.smalltext, styles.textDefault, {marginBottom: 13}]}>
             You can make changes to this later
-          </Text>
-
-      
+          </Text>      
             <TextInput
-              placeholder={ 'e.g. Fridge'}
+              placeholder={'Fridge'}
               placeholderTextColor={'#B0B6B3'}
               // onChangeText={}
               style={
-              [styles.textDefault, styles.label,
+              [styles.textbox,
                 {
-                height: 35,
-                width: '70%',
                 backgroundColor: "#F2F2F2",
                 color: '#052B2D', 
-                paddingHorizontal: 8,
+                paddingHorizontal: 9,
                 borderRadius: 3,
                 justifyContent: 'center', 
                 paddingVertical: 14,
                 }
               ]}
               />
+          </View>
+          <View style={{marginTop: 20}}>
+            <Pressable
+            style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+            onPress={() => "ContainerSetup-1"}
+          >
+            <Text
+              style={[styles.textDefault, styles.buttonText]}> Next </Text>
+          </Pressable>
+          </View>
         </View>
       </SafeAreaView>
     );

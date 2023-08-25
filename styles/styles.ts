@@ -53,6 +53,16 @@ const styles = StyleSheet.create({
         fontSize: 10,
     
       },
+
+      next_button: {
+        alignItems: 'center',
+        width: 147,
+        paddingVertical: 10,
+        paddingHorizontal: 45, /*FIXME:need to fix!!!*/
+        borderRadius: 12,
+        fontSize: 13,
+    
+      },
     
       buttonText: {
         color: '#FBFEFB'
