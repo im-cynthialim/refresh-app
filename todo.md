@@ -23,8 +23,11 @@
     - figure out flow for undefined user(in case Tutorial page beings without signup (can use if statement in signup area?))
     |_ **fixed** but page animation isn't correct
 
+    - Font size of wheel relative to rest of screen (test on other devices)
+
 ## Additional:
     
+    - collecting data based on location to accurately range room temp values
     - fix isLoggedIn navigation path (e.g. if logged in, show home, else show log in)
     - add sign-in option with email only by sending link to email to login
     - add sign-in option with Google + Facebook as providers
@@ -46,12 +49,17 @@
     - new container
     - expand container
     
+## Design decisions
+
+- replace Flatlist w Sectionlist?
+- custom option for container temp?
+
 
 
 
 ## Tasks:
 - design search bar
-- figure out store and data management
+<!-- - figure out store and data management -->
 - implement **container-specific** data in expand container page
 
 ### figure out backend
@@ -64,6 +72,10 @@
 
 - use fb uid for identifying users
 - use fb token id for **VERIFYING** users
+
+### Resources
+
+- wheel picker: https://www.npmjs.com/package/react-native-wheely/v/0.2.1?activeTab=readme
 
 
 To update ruby:
