@@ -1,3 +1,4 @@
 {
-    "vscord.status.idle.resetElapsedTime": true
+    "vscord.status.idle.resetElapsedTime": true,
+    "discord.removeRemoteRepository": true
 }

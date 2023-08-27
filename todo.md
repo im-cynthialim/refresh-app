@@ -29,8 +29,17 @@ Tutorial:
 - Button highlight for checkboxes on CS-3 screen
     
 
+
+## Tasks:
+- design search bar
+<!-- - figure out store and data management -->
+- implement **container-specific** data in expand container page
+- welcome page before tutorial w explanation
+- option to skip tut (flow will include empty container)
+
 ## Additional:
     
+- gray layout for when objects loading (see ubereats page load for ref)
 - collecting data based on location to accurately range room temp values
 ~~- fix isLoggedIn navigation path (e.g. if logged in, show home, else show log in)~~
 - add sign-in option with email only by sending link to email to login
@@ -60,14 +69,6 @@ Main Components:
 
 - fix color + look for tut (too bland)
 - "Select some factors you'd like to display" -> too vague, factors for what? need to specify for items in each container (but too long)
-
-
-## Tasks:
-- design search bar
-<!-- - figure out store and data management -->
-- implement **container-specific** data in expand container page
-- welcome page before tutorial w explanation
-- option to skip tut (flow will include empty container)
 
 
 ### figure out backend

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { TouchableHighlight, Text, TextInput, View, Image, Pressable } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import type { PropsWithChildren } from 'react';
+import type {ViewStyle} from 'react-native';
+import { Animated, Modal, Text, TextInput, View, Image, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
@@ -8,6 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getDatabase, ref, set } from 'firebase/database';
 import WheelPicker from 'react-native-wheely';
 import { CheckBox, Icon } from '@rneui/themed';
+import { BackgroundImage } from '@rneui/base';
 
 
 function TutorialScreen({ route, navigation }) {
@@ -178,13 +181,77 @@ function TutorialScreen({ route, navigation }) {
 
   function ContainerSetup3({ navigation }) {
 
-    const [expiryDate, setExpiryDate] = useState(false);
+    const [expiryDate, setExpiryDate] = useState(true);
     const [dateBought, setDateBought] = useState(false);
-    const [dateStored, setDateStored] = useState(false);
+    const [dateStored, setDateStored] = useState(true);
     const [dateOpened, setDateOpened] = useState(false);
     const [itemCategory, setItemCategory] = useState(false);
-    const [itemQuantity, setItemQuantity] = useState(false);
-    const [productType, setProductType] = useState(false);
+    const [itemQuantity, setItemQuantity] = useState(true);
+    // const [productType, setProductType] = useState(false);
+
+    const [yesterdayDate, setYesterdayDate] = useState('');
+    const [twoDaysAgo, setTwoDaysAgo] = useState('');
+    // const [fewDaysAgo, setFewDaysAgo] = useState('');
+    // type FadeInViewProps = PropsWithChildren<{style: ViewStyle}>;
+
+    // const FadeInView: React.FC<FadeInViewProps> = props => {
+    //   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
+    
+    //   useEffect(() => {
+    //     Animated.timing(fadeAnim, {
+    //       toValue: 1,
+    //       duration: 10000,
+    //       useNativeDriver: true,
+    //     }).start();
+    //   }, [fadeAnim]);
+    
+    //   return (
+    //     <Animated.View // Special animatable View
+    //       style={{
+    //         opacity: fadeAnim, // Bind opacity to animated value
+    //       }}>
+    //       {props.children}
+    //     </Animated.View>
+    //   );
+    // };
+
+
+    useEffect(() => {
+      var date = new Date().getDate() - 1; //Yesterday Date
+      var month = new Date().toLocaleString('default', { month: 'long' }); + 1; //Current Month
+      var year = new Date().getFullYear(); //Current Year
+      setYesterdayDate(
+        month + ' ' + date + ', ' + year
+      );
+
+      setTwoDaysAgo(
+        month + ' ' + (date - 1) + ', ' + year
+      )
+
+      // setFewDaysAgo(
+      //   month + ' ' + (date - 2) + ', ' + year
+      // )
+    }, []);
+
+    const [modalVisibility, setModalVisibility] = useState(false);
+    // type titleTest = {
+    //   label: string;
+    // };
+
+    // const titleAddition = ({titleTest}) => {
+    //   return (
+    //     <View>
+    //       <Text>
+    //         {titleTest}
+    //       </Text>
+    //     <Image
+    //            source={require('../assets/images/cooked-tag.png')}
+    //            style={{ borderRadius: 7, width: 150, height: 100, resizeMode: 'stretch'}}
+
+    //          />
+    //  </View>
+    //   )
+    // }
 
     return (
       <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
@@ -220,7 +287,7 @@ function TutorialScreen({ route, navigation }) {
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
               <CheckBox
                 title="Expiry Date"
-                containerStyle={{ width: '40%' }}
+                containerStyle={{ width: '40%', backgroundColor: '#FBFEFB' }}
                 checked={expiryDate}
                 onPress={() => setExpiryDate(!expiryDate)}
                 fontFamily='Rubik-Medium'
@@ -233,9 +300,11 @@ function TutorialScreen({ route, navigation }) {
               />
 
 
+
+
               <CheckBox
                 title="Date Bought"
-                containerStyle={{ width: '40%' }}
+                containerStyle={{ width: '40%', backgroundColor: '#FBFEFB' }}
                 checked={dateBought}
                 onPress={() => setDateBought(!dateBought)}
                 fontFamily='Rubik-Medium'
@@ -248,6 +317,20 @@ function TutorialScreen({ route, navigation }) {
               />
 
               <CheckBox
+                title="Item Quantity"
+                checked={itemQuantity}
+                containerStyle={{ width: '40%', backgroundColor: '#FBFEFB' }}
+                onPress={() => setItemQuantity(!itemQuantity)}
+                fontFamily='Rubik-Medium'
+                textStyle={{ color: '#021E20' }}
+                uncheckedColor='#021E20'
+                checkedColor='#55AA90'
+                checkedIcon={'check-square'}
+                uncheckedIcon={'square'}
+                iconType='feather'
+              />
+
+              {/* <CheckBox
                 title="Product Type"
                 checked={productType}
                 containerStyle={{ width: '40%' }}
@@ -259,12 +342,12 @@ function TutorialScreen({ route, navigation }) {
                 checkedIcon={'check-square'}
                 uncheckedIcon={'square'}
                 iconType='feather'
-              />
+              /> */}
 
               <CheckBox
                 title="Date Stored"
                 checked={dateStored}
-                containerStyle={{ width: '40%' }}
+                containerStyle={{ width: '40%', backgroundColor: '#FBFEFB' }}
                 onPress={() => setDateStored(!dateStored)}
                 fontFamily='Rubik-Medium'
                 textStyle={{ color: '#021E20' }}
@@ -275,29 +358,77 @@ function TutorialScreen({ route, navigation }) {
                 iconType='feather'
               />
 
+              <View style={{ width: '45%', flexDirection: 'row', gap: -25, zIndex: 1, alignItems: 'center' }}>
+                <CheckBox
+                  title="Item Category"
+                  checked={itemCategory}
+                  // containerStyle={{ width: '40%' }}
+                  onPress={() => setItemCategory(!itemCategory)}
+                  fontFamily='Rubik-Medium'
+                  textStyle={{ color: '#021E20' }}
+                  uncheckedColor='#021E20'
+                  checkedColor='#55AA90'
+                  checkedIcon={'check-square'}
+                  uncheckedIcon={'square'}
+                  iconType='feather'
+                />
+                <Pressable
+                  style={{ width: 'auto' }}
+                  onPress={() => setModalVisibility(!modalVisibility)}
+                >
+                  <Icon
+                    name="info"
+                    type='feather'
+                    color="#021E20"
+                    size={15}
+                  />
+
+                </Pressable>
+              </View>
 
 
-              <CheckBox
-                title="Item Category"
-                checked={itemCategory}
-                containerStyle={{ width: '40%' }}
-                onPress={() => setItemCategory(!itemCategory)}
-                fontFamily='Rubik-Medium'
-                textStyle={{ color: '#021E20' }}
-                uncheckedColor='#021E20'
-                checkedColor='#55AA90'
-                checkedIcon={'check-square'}
-                uncheckedIcon={'square'}
-                iconType='feather'
-              />
+
+
+
+
+
+
+              {/* <View style={{ flexDirection: 'row', zIndex: 1 }}>
+                  <View>
+                    <Image
+                      source={require('../assets/images/cooked-tag.png')}
+                      style={{ width: 40, height: 20, resizeMode: 'contain' }}
+                    />
+                  </View>
+
+                  <View>
+                    <Image
+                      source={require('../assets/images/raw-tag.png')}
+                      style={{ width: 40, height: 20, resizeMode: 'contain' }}
+                    />
+                  </View>
+                  <View style={{ backgroundColor: '#97D4EE', paddingVertical: 10, paddingHorizontal: 20, width: 'auto', borderRadius: 20, flexDirection: 'row' }}>
+
+                    <Image
+                      source={require('../assets/images/meal-icon.png')}
+                      style={{ width: 40, height: 10, resizeMode: 'contain', }}
+                    />
+                    <Text style={[styles.textDefault]}>
+                      Meal
+                    </Text>
+                  </View>
+                </View> */}
+
+
+
+
               <CheckBox
                 title="Date Opened"
                 checked={dateOpened}
-                containerStyle={{ width: '40%' }}
+                containerStyle={{ width: '40%', backgroundColor: '#FBFEFB' }}
                 onPress={() => setDateOpened(!dateOpened)}
                 fontFamily='Rubik-Medium'
                 textStyle={{ color: '#021E20' }}
-
                 uncheckedColor='#021E20'
                 checkedColor='#55AA90'
                 checkedIcon={'check-square'}
@@ -305,30 +436,75 @@ function TutorialScreen({ route, navigation }) {
                 iconType='feather'
               />
 
-
-
-              <CheckBox
-                title="Item Quantity"
-                checked={itemQuantity}
-                containerStyle={{ width: '40%' }}
-                onPress={() => setItemQuantity(!itemQuantity)}
-                fontFamily='Rubik-Medium'
-                textStyle={{ color: '#021E20' }}
-                uncheckedColor='#021E20'
-                checkedColor='#55AA90'
-                checkedIcon={'check-square'}
-                uncheckedIcon={'square'}
-                iconType='feather'
-              />
+            </View>
+          </View>
 
 
 
+          {/* Model Display */}
+          <View style={{}}>
+            <Text style={[styles.textDefault, styles.label, { paddingLeft: 7, color: '#96979C' }]}>
+              Model Display
+            </Text>
 
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <View>
+                <Image
+                  source={require('../assets/images/categories/tomatoes.png')}
+                  style={{ borderRadius: 7, width: 150, height: 100, resizeMode: 'stretch' }}
 
+                />
+              </View>
+              <View style={{ paddingLeft: '5%', gap: 7, width: '50%' }}>
+                <Text style={[styles.textDefault, { color: '#021E20', fontSize: 18 }]}>
+                  Tomatoes
+                </Text>
 
+                {/* <Text style={[styles.regularFont, { color: dateStored ? "#021E20" : '#FBFEFB', fontSize: 10 }]}>
+                  {yesterdayDate}
+                </Text>
+
+                <Text style={[styles.regularFont, { color: expiryDate ? "#9AB725" : '#FBFEFB', fontSize: 10 }]}>
+                  2 days
+                </Text>
+
+                <Text style={[styles.regularFont, { color: dateOpened ? "#B0B6B3" : '#FBFEFB', fontSize: 10 }]}>
+                  Date Opened: {yesterdayDate}
+                </Text>
+
+                <Text style={[styles.regularFont, { color: dateBought ? "#B0B6B3" : '#FBFEFB', fontSize: 10 }]}>
+                  Date Bought: {twoDaysAgo}
+                </Text> */}
+
+                <Text style={[styles.regularFont, { color: "#021E20", opacity: dateStored ? 100 : 0, position: dateStored ? 'relative' : 'absolute', fontSize: 10 }]}>
+                  {yesterdayDate}
+                </Text>
+
+                <Text style={[styles.regularFont, { color: "#9AB725", opacity: expiryDate ? 100 : 0, position: expiryDate ? 'relative' : 'absolute', fontSize: 10 }]}>
+                  2 days
+                </Text>
+
+                <Text style={[styles.regularFont, { color: "#B0B6B3", opacity: dateOpened ? 100 : 0, position: dateOpened ? 'relative' : 'absolute', fontSize: 10 }]}>
+                  Date Opened : {yesterdayDate}
+                </Text>
+
+                <Text style={[styles.regularFont, { color: "#B0B6B3", opacity: dateBought ? 100 : 0, position: dateBought ? 'relative' : 'absolute', fontSize: 10 }]}>
+                  Date Bought: {twoDaysAgo}
+                </Text>
+
+              </View>
+
+              <View style={{}}>
+                <Text style={[styles.textDefault, styles.label, { color: itemQuantity ? "#021E20" : '#FBFEFB', fontSize: 18 }]}>
+                  4
+                </Text>
+
+              </View>
 
 
             </View>
+
+
 
 
           </View>
@@ -341,8 +517,75 @@ function TutorialScreen({ route, navigation }) {
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
             </Pressable>
           </View>
+
+
+
+
         </View>
-      </SafeAreaView>
+
+        {/* <TouchableOpacity
+            >
+              <View
+              style={{backgroundColor: modalVisibility ? 'rgba(7, 7, 7, 0.56)' : '#00000', height: '100%'}}
+              />
+            </TouchableOpacity> */}
+
+        <View>
+          <TouchableWithoutFeedback
+            onPress={() => setModalVisibility(false)}
+            style={{
+              backgroundColor: 'purple',
+              height: '100%',
+            }}
+            >
+          <Modal
+
+            animationType='slide'
+            visible={modalVisibility}
+          // presentationStyle='overFullScreen'
+            transparent={true}
+          >
+            
+
+            <TouchableWithoutFeedback onPress={() => {}}>
+          <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+            <View style={{ zIndex: 100, backgroundColor: 'blue', marginTop: '100%', height: '40%', borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+              <View>
+                <Image
+                  source={require('../assets/images/cooked-tag.png')}
+                  style={{ width: 40, height: 20, resizeMode: 'contain' }}
+                />
+              </View>
+
+              <View>
+                <Image
+                  source={require('../assets/images/raw-tag.png')}
+                  style={{ width: 40, height: 20, resizeMode: 'contain' }}
+                />
+              </View>
+              <View style={{ backgroundColor: '#97D4EE', paddingVertical: 10, paddingHorizontal: 20, width: 'auto', borderRadius: 20, flexDirection: 'row' }}>
+
+                <Image
+                  source={require('../assets/images/meal-icon.png')}
+                  style={{ width: 40, height: 10, resizeMode: 'contain', }}
+                />
+                <Text style={[styles.textDefault]}>
+                  Meal
+                </Text>
+              </View>
+            </View>
+          </View>
+          </TouchableWithoutFeedback>
+
+        </Modal>
+        </TouchableWithoutFeedback>
+      </View>
+
+
+        
+
+
+      </SafeAreaView >
     );
   };
 
