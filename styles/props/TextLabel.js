@@ -8,9 +8,11 @@ function TextLabel (props) {
     const label = props.label;
 
     return (
+
         <Text style={[styles.textDefault, styles.label]}>
          {label}
         </Text>
+
     );
 }
 

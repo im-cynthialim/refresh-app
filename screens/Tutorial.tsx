@@ -11,6 +11,7 @@ import { getDatabase, ref, set } from 'firebase/database';
 import WheelPicker from 'react-native-wheely';
 import { CheckBox, Icon } from '@rneui/themed';
 import ConfettiCannon from 'react-native-confetti-cannon';
+import TextLabel from '../styles/props/TextLabel';
 
 
 
@@ -59,7 +60,7 @@ function TutorialScreen({ route, navigation }) {
             <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
               Set up your {"\n"} first container
             </Text>
-            <Text style={[styles.smalltext, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 16 }]}>
+            <Text style={[styles.smalltext, styles.textDefault, { color: '#B0B6B3', textAlign: 'center', marginBottom: 16 }]}>
               This is the location you'll use to {"\n"} store your foods
             </Text>
             <View style={[styles.horizontalRule]} />
@@ -94,7 +95,7 @@ function TutorialScreen({ route, navigation }) {
             <Pressable
               style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
               // onPress={() => addContainer(containerName, userId)}
-              onPress={() => navigation.navigate("ContainerSetup-2", {containerName: containerName, userId: userId})}
+              onPress={() => navigation.navigate("ContainerSetup-2", { containerName: containerName, userId: userId })}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
@@ -106,12 +107,12 @@ function TutorialScreen({ route, navigation }) {
   };
 
   function ContainerSetup2({ route, navigation }) {
-    const {containerName, userId} = route.params;
+    const { containerName, userId } = route.params;
     const [containerTemp, setContainerTemp] = useState('Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)');
     // const sliceIndex = containerTemp.indexOf("\n");
 
     // const finalTemp = containerTemp.slice(0, sliceIndex + 1);
-    
+
 
     return (
       <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
@@ -170,7 +171,7 @@ function TutorialScreen({ route, navigation }) {
           <View style={{ marginTop: 20 }}>
             <Pressable
               style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-              onPress={() => navigation.navigate("ContainerSetup-3", {containerName: containerName, containerTemp: containerTemp, userId: userId})}
+              onPress={() => navigation.navigate("ContainerSetup-3", { containerName: containerName, containerTemp: containerTemp, userId: userId })}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
@@ -186,18 +187,18 @@ function TutorialScreen({ route, navigation }) {
     // const {containerName, containerTemp, userId} = route.params;
 
     const [expiryDate, setExpiryDate] = useState(true);
-    const [dateBought, setDateBought] = useState(false);
-    const [dateStored, setDateStored] = useState(true);
-    const [dateOpened, setDateOpened] = useState(false);
+    const [showDateBought, setShowDateBought] = useState(false);
+    const [showDateStored, setShowDateStored] = useState(true);
+    const [showDateOpened, setShowDateOpened] = useState(false);
     const [itemCategory, setItemCategory] = useState(false);
     const [itemQuantity, setItemQuantity] = useState(true);
-    // const [productType, setProductType] = useState(false);
+
 
     const [yesterdayDate, setYesterdayDate] = useState('');
     const [twoDaysAgo, setTwoDaysAgo] = useState('');
     // const [fewDaysAgo, setFewDaysAgo] = useState('');
 
-    const factorsList = [expiryDate, dateBought, itemQuantity, dateStored, itemCategory, dateOpened];
+    const factorsList = [expiryDate, showDateBought, itemQuantity, showDateStored, itemCategory, showDateOpened];
 
 
     useEffect(() => {
@@ -272,8 +273,8 @@ function TutorialScreen({ route, navigation }) {
               <CheckBox
                 title="Date Bought"
                 containerStyle={{ width: '40%', backgroundColor: '#FBFEFB' }}
-                checked={dateBought}
-                onPress={() => setDateBought(!dateBought)}
+                checked={showDateBought}
+                onPress={() => setShowDateBought(!showDateBought)}
                 fontFamily='Rubik-Medium'
                 textStyle={{ color: '#021E20' }}
                 uncheckedColor='#021E20'
@@ -297,25 +298,11 @@ function TutorialScreen({ route, navigation }) {
                 iconType='feather'
               />
 
-              {/* <CheckBox
-                title="Product Type"
-                checked={productType}
-                containerStyle={{ width: '40%' }}
-                onPress={() => setProductType(!productType)}
-                fontFamily='Rubik-Medium'
-                textStyle={{ color: '#021E20' }}
-                uncheckedColor='#021E20'
-                checkedColor='#55AA90'
-                checkedIcon={'check-square'}
-                uncheckedIcon={'square'}
-                iconType='feather'
-              /> */}
-
               <CheckBox
                 title="Date Stored"
-                checked={dateStored}
+                checked={showDateStored}
                 containerStyle={{ width: '40%', backgroundColor: '#FBFEFB' }}
-                onPress={() => setDateStored(!dateStored)}
+                onPress={() => setShowDateStored(!showDateStored)}
                 fontFamily='Rubik-Medium'
                 textStyle={{ color: '#021E20' }}
                 uncheckedColor='#021E20'
@@ -355,9 +342,9 @@ function TutorialScreen({ route, navigation }) {
 
               <CheckBox
                 title="Date Opened"
-                checked={dateOpened}
+                checked={showDateOpened}
                 containerStyle={{ width: '40%', backgroundColor: '#FBFEFB' }}
-                onPress={() => setDateOpened(!dateOpened)}
+                onPress={() => setShowDateOpened(!showDateOpened)}
                 fontFamily='Rubik-Medium'
                 textStyle={{ color: '#021E20' }}
                 uncheckedColor='#021E20'
@@ -399,7 +386,7 @@ function TutorialScreen({ route, navigation }) {
                   />
                 </View>
 
-                <Text style={[styles.regularFont, { color: "#021E20", opacity: dateStored ? 100 : 0, position: dateStored ? 'relative' : 'absolute', fontSize: 10 }]}>
+                <Text style={[styles.regularFont, { color: "#021E20", opacity: showDateStored ? 100 : 0, position: showDateStored ? 'relative' : 'absolute', fontSize: 10 }]}>
                   {yesterdayDate}
                 </Text>
 
@@ -407,11 +394,11 @@ function TutorialScreen({ route, navigation }) {
                   2 days
                 </Text>
 
-                <Text style={[styles.regularFont, { color: "#B0B6B3", opacity: dateOpened ? 100 : 0, position: dateOpened ? 'relative' : 'absolute', fontSize: 10 }]}>
+                <Text style={[styles.regularFont, { color: "#B0B6B3", opacity: showDateOpened ? 100 : 0, position: showDateOpened ? 'relative' : 'absolute', fontSize: 10 }]}>
                   Date Opened : {yesterdayDate}
                 </Text>
 
-                <Text style={[styles.regularFont, { color: "#B0B6B3", opacity: dateBought ? 100 : 0, position: dateBought ? 'relative' : 'absolute', fontSize: 10 }]}>
+                <Text style={[styles.regularFont, { color: "#B0B6B3", opacity: showDateBought ? 100 : 0, position: showDateBought ? 'relative' : 'absolute', fontSize: 10 }]}>
                   Date Bought: {twoDaysAgo}
                 </Text>
 
@@ -436,7 +423,7 @@ function TutorialScreen({ route, navigation }) {
             <Pressable
               style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
               onPress={() => navigation.navigate("ContainerSetup-4")}
-              // onPress={() => addContainer(containerName, containerTemp, factorsList, userId)}
+            // onPress={() => addContainer(containerName, containerTemp, factorsList, userId)}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
@@ -513,8 +500,8 @@ function TutorialScreen({ route, navigation }) {
   function ContainerSetup4({ navigation }) {
 
     return (
-      <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%', justifyContent: 'center'}}>
-      {/* <ConfettiCannon 
+      <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%', justifyContent: 'center' }}>
+        {/* <ConfettiCannon 
         count={200}
         origin={{x:-20, y:-10}}
         fadeOut={true}
@@ -522,31 +509,265 @@ function TutorialScreen({ route, navigation }) {
 
         {/* page content */}
         <View style={{ alignItems: 'center' }}>
-          <View style={{justifyContent: 'center'}}>
+          <View style={{ justifyContent: 'center' }}>
             <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
-             Container Added!
+              Container Added!
             </Text>
-            </View>
-          <View style={{marginTop: 50}}>
+          </View>
+          <View style={{ marginTop: 50 }}>
             <Pressable
-              style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276'}, styles.next_button]}
-              onPress={() => navigation.navigate("FoodSetup-1")}
+              style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+              onPress={() => navigation.navigate("FoodSetup")}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
             </Pressable>
-            </View>
+          </View>
         </View>
       </SafeAreaView>
     );
   };
 
 
-  function FoodSetup1({ navigation }) {
+  function FoodSetup({ navigation }) {
+
+    const [productName, setProductName] = useState('');
+    const [productType, setProductType] = useState(''); //automated
+    const [productQuantity, setProductQuantity] = useState(''); //can't be 0
+    const [productCategory, setProductCategory] = useState(''); //dropdown menu
+    const [dateBought, setDateBought] = useState('');
+    const [dateStored, setDateStored] = useState('');
+    const [dateOpened, setDateOpened] = useState('');
+    const [personalNotes, addPersonalNotes] = useState('');
+    const [ptModalVisibility, setPTModalVisibility] = useState(false);
+    const [cModalVisibility, setCModalVisibility] = useState(false);
+
 
     return (
-      <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%', justifyContent: 'center'}}>
-      
+      <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
+        {/* progress bar */}
+        <View style={{ flexDirection: 'row', paddingTop: 12, justifyContent: 'center', gap: 5 }}>
+          <View style={{ borderRadius: 64, backgroundColor: '#052B2D', width: '30%' }} />
+
+          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%' }}>
+            <View style={{ zIndex: 1, borderRadius: 64, backgroundColor: '#052B2D', width: '30%', height: 10 }} />
+          </View>
+          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%', height: 10 }} />
+
+        </View>
+
+        <View style={{ alignItems: 'center', gap: 25, paddingTop: 30 }}>
+          <View style={{ alignItems: 'center' }}>
+            <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
+              Add your food
+            </Text>
+            <Text style={[styles.smalltext, styles.textDefault, { color: '#B0B6B3', textAlign: 'center', marginBottom: 16 }]}>
+              Add some foods to store in your {"\n"} new container
+            </Text>
+          </View>
+
+          {/* product line */}
+          <View style={{ paddingHorizontal: '2%', flexDirection: 'row', gap: 10 }}>
+            <View style={{ width: '30%' }}>
+              <TextLabel label="product name" />
+              <TextInput
+                placeholder={'Tomatoes'}
+                placeholderTextColor={'#B0B6B3'}
+                value={productName}
+                onChangeText={text => setProductName(text)}
+                style={{
+                  fontFamily: 'Rubik-Medium',
+                  backgroundColor: "#F2F2F2",
+                  color: '#052B2D',
+                  paddingHorizontal: 12,
+                  borderRadius: 3,
+                  justifyContent: 'center',
+                  paddingVertical: 14,
+                }}
+              />
+            </View>
+            <View style={{ width: '30%' }}>
+              <View style={{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }}>
+                <Text style={[styles.textDefault, { fontSize: 14, color: '#052B2D' }]}>
+                  product type
+                </Text>
+
+                <Pressable style={{ paddingLeft: 2 }}
+                  onPress={() => setPTModalVisibility(!ptModalVisibility)}
+                >
+                  <Icon
+                    name="info"
+                    type='feather'
+                    color="#021E20"
+                    size={15}
+                  />
+
+                </Pressable>
+              </View>
+
+              <TextInput
+                placeholder={'Tomatoes'}
+                placeholderTextColor={'#B0B6B3'}
+                value={productType}
+                onChangeText={text => setProductType(text)}
+                style={{
+                  fontFamily: 'Rubik-Medium',
+                  backgroundColor: "#F2F2F2",
+                  color: '#052B2D',
+                  paddingHorizontal: 12,
+                  borderRadius: 3,
+                  justifyContent: 'center',
+                  paddingVertical: 14,
+                }}
+              />
+            </View>
+            <View style={{ width: '20%' }}>
+              <TextLabel label="quantity" />
+              <TextInput
+                placeholder={'1'}
+                placeholderTextColor={'#B0B6B3'}
+                value={productQuantity}
+                onChangeText={text => setProductQuantity(text)}
+                style={{
+                  fontFamily: 'Rubik-Medium',
+                  backgroundColor: "#F2F2F2",
+                  color: '#052B2D',
+                  paddingHorizontal: 12,
+                  borderRadius: 3,
+                  justifyContent: 'center',
+                  paddingVertical: 14,
+                }}
+              />
+            </View>
+          </View>
+          <View style={{ marginTop: 20 }}>
+            <Pressable
+              style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+              // onPress={() => addContainer(containerName, userId)}
+              onPress={() => navigation.navigate("Signup")}
+            >
+              <Text
+                style={[styles.textDefault, styles.buttonText]}> Next </Text>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* pt modal */}
+        <View>
+          <Modal
+            isVisible={ptModalVisibility}
+            animationInTiming={200}
+            style={{ margin: 0 }}
+            // backdropColor='rgb(7,7,7)'
+            backdropOpacity={0.56}
+            onBackdropPress={() => setPTModalVisibility(false)}
+            onSwipeComplete={() => setPTModalVisibility(false)}
+            swipeDirection={'down'}
+          >
+            <View style={{ backgroundColor: '#FBFEFB', marginTop: '90%', justifyContent: 'flex-start', paddingTop: '8%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+
+
+
+                <View style={{alignItems: 'flex-start' }}>
+                  <Text style={[styles.textDefault, styles.subtitle]}>
+                    Product Type
+                  </Text>
+                  <Text style={[styles.regularFont, { paddingTop: 5, fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
+                    To accurately predict food expiry dates, we automatically try to classify the item you're storing
+                  </Text>
+                </View>
+
+                <View style={{ paddingVertical: 10, alignItems: 'flex-start' }}>
+                  <Text style={[styles.textDefault, styles.label, { marginBottom: 5 }]}>
+                    Successful classification
+                  </Text>
+                  <Text style={[styles.regularFont, { fontSize: 14, color: '#96979C' }]}>
+                    If classified successfully, the product type will display the food name or that of a similar item
+                  </Text>
+                </View>
+
+                <View>
+                  <Text style={[styles.textDefault, styles.label, { marginBottom: 5 }]}>
+                    Manual entry
+                  </Text>
+                  <Text style={[styles.regularFont, { fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
+                    If the product type field is left empty, manually enter the food name or a similar item
+                  </Text>
+                </View>
+
+                <View style={{alignItems: 'center', paddingTop: 10}}>
+                <Pressable
+                  style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+                  // onPress={() => addContainer(containerName, userId)}
+                  onPress={() => setPTModalVisibility(false)}
+                >
+                  <Text
+                    style={[styles.textDefault, styles.buttonText]}> Close </Text>
+                </Pressable>
+                </View>
+              </View>
+
+          </Modal>
+        </View>
+
+        {/* category modal */}
+        <View>
+          <Modal
+            isVisible={cModalVisibility}
+            animationInTiming={200}
+            style={{ margin: 0 }}
+            // backdropColor='rgb(7,7,7)'
+            backdropOpacity={0.56}
+            onBackdropPress={() => setCModalVisibility(false)}
+            onSwipeComplete={() => setCModalVisibility(false)}
+            swipeDirection={'down'}
+          >
+            <View style={{ backgroundColor: '#FBFEFB', marginTop: '110%', justifyContent: 'center', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+              {/* <View style={{justifyContent: 'center'}}> */}
+              <Text style={[styles.textDefault, styles.label, { color: '#96979C', textAlign: 'center' }]}>
+                Indicate the state of foods in your container
+              </Text>
+              {/* </View> */}
+              <View style={{ gap: 10 }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={require('../assets/images/raw-tag.png')}
+                    style={{ width: 120, height: 55, resizeMode: 'center' }}
+                  />
+                  <View style={{ paddingLeft: '5%' }}>
+                    <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Raw Food </Text>
+                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C', width: '65%' }]}>Includes items such as fresh produce and uncooked meat </Text>
+                  </View>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={require('../assets/images/cooked-tag.png')}
+                    style={{ width: 120, height: 55, resizeMode: 'center' }}
+                  />
+                  <View style={{ paddingLeft: '5%' }}>
+                    <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Cooked Food </Text>
+                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C' }]}>Includes all cooked items </Text>
+                  </View>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={require('../assets/images/meal-tag.png')}
+                    style={{ width: 120, height: 55, resizeMode: 'center' }}
+                  />
+                  <View style={{ paddingLeft: '5%' }}>
+                    <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Meal </Text>
+                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C', width: '50%' }]}>Includes items composed of multiple foods, such as yesterday's pasta dinner </Text>
+                  </View>
+                </View>
+
+              </View>
+
+            </View>
+
+          </Modal>
+        </View>
       </SafeAreaView>
     );
   };
@@ -556,7 +777,7 @@ function TutorialScreen({ route, navigation }) {
 
   return (
     <Tutorial.Navigator
-      initialRouteName="ContainerSetup-3"
+      initialRouteName="FoodSetup"
       screenOptions={{
         headerShown: false
       }}>
@@ -564,7 +785,7 @@ function TutorialScreen({ route, navigation }) {
       <Tutorial.Screen name="ContainerSetup-2" component={ContainerSetup2} />
       <Tutorial.Screen name="ContainerSetup-3" component={ContainerSetup3} />
       <Tutorial.Screen name="ContainerSetup-4" component={ContainerSetup4} />
-      <Tutorial.Screen name="FoodSetup-1" component={FoodSetup1} />
+      <Tutorial.Screen name="FoodSetup" component={FoodSetup} />
     </Tutorial.Navigator>
   );
 }

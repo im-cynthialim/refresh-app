@@ -39,6 +39,7 @@ Tutorial:
     |_ **fixed** but page animation isn't correct
 - How to save state for checkboxes when returning to previous page (redux?)
 - Decorate CS-4 page (with confetti or animation)
+- Too much writing for add food section (product type explanation)
 
 ### Additional
 
@@ -48,6 +49,8 @@ Tutorial:
 - Slice containerTemp string to not store temp values (in deg F, deg C) to db
 
 ### Notes
+
+- Toast notification or page for added container?
 
 ### Completed
 
