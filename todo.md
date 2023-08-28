@@ -27,10 +27,14 @@ Tutorial:
 - Color! (Might need to change, + make sure all dark fonts are extreme dark color)
 - Back button navigation a bit flawed when calling prev screen
 - Button highlight for checkboxes on CS-3 screen
+
+- Fix modal, want to click out of it
+- How to save state for checkboxes when returning to previous page (redux?)
     
 
 
 ## Tasks:
+
 - design search bar
 <!-- - figure out store and data management -->
 - implement **container-specific** data in expand container page

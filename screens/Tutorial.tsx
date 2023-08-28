@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { PropsWithChildren } from 'react';
-import type {ViewStyle} from 'react-native';
-import { Animated, Modal, Text, TextInput, View, Image, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import type { ViewStyle } from 'react-native';
+import Modal from "react-native-modal";
+import { Animated, Text, TextInput, View, Image, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
@@ -196,7 +197,7 @@ function TutorialScreen({ route, navigation }) {
 
     // const FadeInView: React.FC<FadeInViewProps> = props => {
     //   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
-    
+
     //   useEffect(() => {
     //     Animated.timing(fadeAnim, {
     //       toValue: 1,
@@ -204,7 +205,7 @@ function TutorialScreen({ route, navigation }) {
     //       useNativeDriver: true,
     //     }).start();
     //   }, [fadeAnim]);
-    
+
     //   return (
     //     <Animated.View // Special animatable View
     //       style={{
@@ -511,7 +512,7 @@ function TutorialScreen({ route, navigation }) {
           <View style={{ marginTop: 20 }}>
             <Pressable
               style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-              onPress={() => navigation.navigate("ContainerSetup-3")}
+              onPress={() => navigation.navigate("FoodSetup-1")}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
@@ -531,58 +532,50 @@ function TutorialScreen({ route, navigation }) {
             </TouchableOpacity> */}
 
         <View>
-          <TouchableWithoutFeedback
-            onPress={() => setModalVisibility(false)}
-            style={{
-              backgroundColor: 'purple',
-              height: '100%',
-            }}
-            >
           <Modal
-
-            animationType='slide'
-            visible={modalVisibility}
-          // presentationStyle='overFullScreen'
-            transparent={true}
+            isVisible={modalVisibility}
+            animationInTiming={200}
+            style={{ margin: 0, }}
+            // backdropColor='rgb(7,7,7)'
+            backdropOpacity={0.56}
+            onBackdropPress={() => setModalVisibility(false)}
+            onSwipeComplete={() => setModalVisibility(false)}
+            swipeDirection={'down'}
           >
-            
+            <View style={{ backgroundColor: '#FBFEFB', marginTop: '110%', justifyContent: 'center', paddingLeft: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
 
-            <TouchableWithoutFeedback onPress={() => {}}>
-          <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-            <View style={{ zIndex: 100, backgroundColor: 'blue', marginTop: '100%', height: '40%', borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+            <Text style={[styles.textDefault, styles.label]}>
+              Item Categories
+            </Text>
+      <View style={{gap: 10}}>
               <View>
                 <Image
                   source={require('../assets/images/cooked-tag.png')}
-                  style={{ width: 40, height: 20, resizeMode: 'contain' }}
+                  style={{ width: 120, height: 50, resizeMode: 'center' }}
                 />
               </View>
 
               <View>
                 <Image
                   source={require('../assets/images/raw-tag.png')}
-                  style={{ width: 40, height: 20, resizeMode: 'contain' }}
+                  style={{ width: 120, height: 50, resizeMode: 'center' }}
                 />
               </View>
-              <View style={{ backgroundColor: '#97D4EE', paddingVertical: 10, paddingHorizontal: 20, width: 'auto', borderRadius: 20, flexDirection: 'row' }}>
-
+              {/* <View style={{ backgroundColor: '#97D4EE', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 20, flexDirection: 'row' }}> */}
+              <View>
                 <Image
-                  source={require('../assets/images/meal-icon.png')}
-                  style={{ width: 40, height: 10, resizeMode: 'contain', }}
+                  source={require('../assets/images/meal-tag.png')}
+                  style={{ width: 120, height: 50, resizeMode: 'center' }}
                 />
-                <Text style={[styles.textDefault]}>
-                  Meal
-                </Text>
               </View>
             </View>
-          </View>
-          </TouchableWithoutFeedback>
 
-        </Modal>
-        </TouchableWithoutFeedback>
-      </View>
+            </View>
+          </Modal>
+        </View>
 
 
-        
+
 
 
       </SafeAreaView >
@@ -590,17 +583,96 @@ function TutorialScreen({ route, navigation }) {
   };
 
 
+  function FoodSetup1({ navigation }) {
+
+    const [containerTemp, setContainerTemp] = useState('Fridge Temperature (df - asd deg F/ dfa - dfas deg C');
+
+    return (
+      <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
+        {/* progress bar */}
+        <View style={{ flexDirection: 'row', paddingTop: 12, justifyContent: 'center', gap: 5 }}>
+          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%' }}>
+            <View style={{ zIndex: 1, borderRadius: 64, backgroundColor: '#052B2D', width: '60%', height: 10 }} />
+          </View>
+          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%' }} />
+          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%', height: 10 }} />
+
+        </View>
+
+        {/* <View
+          style={{paddingHorizontal: 17, paddingTop: 17}}>
+            <Pressable
+              style={{zIndex: 1}}
+              onPress = {() => navigation.push("ContainerSetup-1")}>
+              <Image
+                source={require('../assets/images/arrowicon-green.png')}
+                style={{ width: 9, height: 14, marginBottom: 28, alignSelf: 'flex-start'}}
+              />
+            </Pressable>
+
+        </View> */}
+
+        {/* page content */}
+        <View style={{ alignItems: 'center', gap: 25, paddingTop: 30 }}>
+          <View style={{ alignItems: 'center' }}>
+            <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
+              Set up your {"\n"} first container
+            </Text>
+            {/* <Text style={[styles.smalltext, styles.textDefault]}>
+            This is the location you'll use to
+          </Text>
+          <Text style={[styles.smalltext, styles.textDefault, {marginBottom: 16}]}>
+            store your foods
+          </Text> */}
+
+            <View style={[styles.horizontalRule]} />
+          </View>
+
+          <View style={{ alignItems: 'center' }}>
+            <Text style={[styles.label, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
+              Choose the temperature {"\n"} of your container
+
+            </Text>
+            <Text style={[styles.smalltext, styles.textDefault, { marginBottom: 13 }]}>
+              You can make changes to this later
+            </Text>
+
+            <WheelPicker
+              options={['Room Temperature \n(70 °F / 21 °C)', 'Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)', 'Freezer Temperature \n(0 °F / -18 °C)']}
+              selected={'Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)'}
+              onChange={(temp) => setContainerTemp(temp)}
+              itemHeight={55}
+              selectedIndicatorStyle={{ alignSelf: 'center' }}
+              containerStyle={{ width: '70%' }}
+              itemTextStyle={{ fontFamily: 'Rubik-Medium', color: '#021E20', fontSize: 14, textAlign: 'center' }}
+            />
+          </View>
+          <View style={{ marginTop: 20 }}>
+            <Pressable
+              style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+              onPress={() => navigation.navigate("ContainerSetup-3")}
+            >
+              <Text
+                style={[styles.textDefault, styles.buttonText]}> Next </Text>
+            </Pressable>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  };
+
   const Tutorial = createNativeStackNavigator();
 
   return (
     <Tutorial.Navigator
-      initialRouteName="ContainerSetup-2"
+      initialRouteName="ContainerSetup-3"
       screenOptions={{
         headerShown: false
       }}>
       <Tutorial.Screen name="ContainerSetup-1" component={ContainerSetup1} />
       <Tutorial.Screen name="ContainerSetup-2" component={ContainerSetup2} />
       <Tutorial.Screen name="ContainerSetup-3" component={ContainerSetup3} />
+      <Tutorial.Screen name="FoodSetup-1" component={FoodSetup1} />
     </Tutorial.Navigator>
   );
 }
