@@ -13,24 +13,46 @@ Sign Up:
 - fix spacing of elements (too spaced evenly)
 
 Main:
+
+### To Do
+
 - replace all SafeAreaViews with insets: https://reactnavigation.org/docs/handling-safe-area
 - working search bar + new window (or modal) for search results
 - settings popup
 - convert all images in tab bar to icons: `https://medium.com/bam-tech/add-custom-icons-to-your-react-native-application-f039c244386c`
 - fix header height, looks weird
 
+### Additional
+
+### Notes
+
+### Completed
+
+
+
 Tutorial: 
+
+### To Do
+
+- Back button navigation a bit flawed when calling prev screen
 - figure out flow for undefined user(in case Tutorial page beings without signup (can use if statement in signup area?))
     |_ **fixed** but page animation isn't correct
+- How to save state for checkboxes when returning to previous page (redux?)
+- Decorate CS-4 page (with confetti or animation)
+
+### Additional
 
 - Font size of wheel relative to rest of screen (test on other devices)
 - Color! (Might need to change, + make sure all dark fonts are extreme dark color)
-- Back button navigation a bit flawed when calling prev screen
 - Button highlight for checkboxes on CS-3 screen
+- Slice containerTemp string to not store temp values (in deg F, deg C) to db
 
-- Fix modal, want to click out of it
-- How to save state for checkboxes when returning to previous page (redux?)
-    
+### Notes
+
+### Completed
+
+~~- Fix modal, want to click out of it~~
+
 
 
 ## Tasks:

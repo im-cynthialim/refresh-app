@@ -2,16 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import type { PropsWithChildren } from 'react';
 import type { ViewStyle } from 'react-native';
 import Modal from "react-native-modal";
-import { Animated, Text, TextInput, View, Image, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Text, TextInput, View, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
-import TextLabel from '../styles/props/TextLabel';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getDatabase, ref, set } from 'firebase/database';
 import WheelPicker from 'react-native-wheely';
 import { CheckBox, Icon } from '@rneui/themed';
-import { BackgroundImage } from '@rneui/base';
+import ConfettiCannon from 'react-native-confetti-cannon';
+
+
 
 
 function TutorialScreen({ route, navigation }) {
@@ -182,7 +183,7 @@ function TutorialScreen({ route, navigation }) {
 
   function ContainerSetup3({ route, navigation }) {
 
-    const {containerName, containerTemp, userId} = route.params;
+    // const {containerName, containerTemp, userId} = route.params;
 
     const [expiryDate, setExpiryDate] = useState(true);
     const [dateBought, setDateBought] = useState(false);
@@ -434,8 +435,8 @@ function TutorialScreen({ route, navigation }) {
           <View style={{ marginTop: 20 }}>
             <Pressable
               style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-              // onPress={() => navigation.navigate("FoodSetup-1")}
-              onPress={() => addContainer(containerName, containerTemp, factorsList, userId)}
+              onPress={() => navigation.navigate("ContainerSetup-4")}
+              // onPress={() => addContainer(containerName, containerTemp, factorsList, userId)}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
@@ -509,95 +510,60 @@ function TutorialScreen({ route, navigation }) {
     );
   };
 
-  function FoodSetup1({ navigation }) {
-
-    const [containerTemp, setContainerTemp] = useState('Fridge Temperature (df - asd deg F/ dfa - dfas deg C');
+  function ContainerSetup4({ navigation }) {
 
     return (
-      <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
-        {/* progress bar */}
-        <View style={{ flexDirection: 'row', paddingTop: 12, justifyContent: 'center', gap: 5 }}>
-          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%' }}>
-            <View style={{ zIndex: 1, borderRadius: 64, backgroundColor: '#052B2D', width: '60%', height: 10 }} />
-          </View>
-          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%' }} />
-          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%', height: 10 }} />
-
-        </View>
-
-        {/* <View
-          style={{paddingHorizontal: 17, paddingTop: 17}}>
-            <Pressable
-              style={{zIndex: 1}}
-              onPress = {() => navigation.push("ContainerSetup-1")}>
-              <Image
-                source={require('../assets/images/arrowicon-green.png')}
-                style={{ width: 9, height: 14, marginBottom: 28, alignSelf: 'flex-start'}}
-              />
-            </Pressable>
-
-        </View> */}
+      <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%', justifyContent: 'center'}}>
+      {/* <ConfettiCannon 
+        count={200}
+        origin={{x:-20, y:-10}}
+        fadeOut={true}
+        colors={['#99E2B4', '#55AA90']}/> */}
 
         {/* page content */}
-        <View style={{ alignItems: 'center', gap: 25, paddingTop: 30 }}>
-          <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center' }}>
+          <View style={{justifyContent: 'center'}}>
             <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
-              Set up your {"\n"} first container
+             Container Added!
             </Text>
-            {/* <Text style={[styles.smalltext, styles.textDefault]}>
-            This is the location you'll use to
-          </Text>
-          <Text style={[styles.smalltext, styles.textDefault, {marginBottom: 16}]}>
-            store your foods
-          </Text> */}
-
-            <View style={[styles.horizontalRule]} />
-          </View>
-
-          <View style={{ alignItems: 'center' }}>
-            <Text style={[styles.label, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
-              Choose the temperature {"\n"} of your container
-
-            </Text>
-            <Text style={[styles.smalltext, styles.textDefault, { marginBottom: 13 }]}>
-              You can make changes to this later
-            </Text>
-
-            <WheelPicker
-              options={['Room Temperature \n(70 °F / 21 °C)', 'Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)', 'Freezer Temperature \n(0 °F / -18 °C)']}
-              selected={'Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)'}
-              onChange={(temp) => setContainerTemp(temp)}
-              itemHeight={55}
-              selectedIndicatorStyle={{ alignSelf: 'center' }}
-              containerStyle={{ width: '70%' }}
-              itemTextStyle={{ fontFamily: 'Rubik-Medium', color: '#021E20', fontSize: 14, textAlign: 'center' }}
-            />
-          </View>
-          <View style={{ marginTop: 20 }}>
+            </View>
+          <View style={{marginTop: 50}}>
             <Pressable
-              style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-              onPress={() => navigation.navigate("ContainerSetup-3")}
+              style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276'}, styles.next_button]}
+              onPress={() => navigation.navigate("FoodSetup-1")}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
             </Pressable>
-          </View>
+            </View>
         </View>
       </SafeAreaView>
     );
   };
 
+
+  function FoodSetup1({ navigation }) {
+
+    return (
+      <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%', justifyContent: 'center'}}>
+      
+      </SafeAreaView>
+    );
+  };
+
+
   const Tutorial = createNativeStackNavigator();
 
   return (
     <Tutorial.Navigator
-      initialRouteName="ContainerSetup-1"
+      initialRouteName="ContainerSetup-3"
       screenOptions={{
         headerShown: false
       }}>
       <Tutorial.Screen name="ContainerSetup-1" component={ContainerSetup1} />
       <Tutorial.Screen name="ContainerSetup-2" component={ContainerSetup2} />
       <Tutorial.Screen name="ContainerSetup-3" component={ContainerSetup3} />
+      <Tutorial.Screen name="ContainerSetup-4" component={ContainerSetup4} />
       <Tutorial.Screen name="FoodSetup-1" component={FoodSetup1} />
     </Tutorial.Navigator>
   );
