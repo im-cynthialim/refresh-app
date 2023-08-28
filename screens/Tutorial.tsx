@@ -20,8 +20,10 @@ function TutorialScreen({ route, navigation }) {
     const db = getDatabase();
     // if user has been defined (aka gone through proper signup)
     if (userId) {
-      set(ref(db, 'userprofiles/' + JSON.stringify(userId) + '/containers/'), {
-        containerName: containerName
+      set(ref(db, 'userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName)), {
+        containerName: containerName,
+        containerTemp: containerTemp,
+        factorsList: factorsList
       });
     }
 
@@ -91,7 +93,7 @@ function TutorialScreen({ route, navigation }) {
             <Pressable
               style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
               // onPress={() => addContainer(containerName, userId)}
-              onPress={() => navigation.navigate("ContainerSetup-2")}
+              onPress={() => navigation.navigate("ContainerSetup-2", {containerName: containerName, userId: userId})}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
@@ -102,9 +104,13 @@ function TutorialScreen({ route, navigation }) {
     );
   };
 
-  function ContainerSetup2({ navigation }) {
+  function ContainerSetup2({ route, navigation }) {
+    const {containerName, userId} = route.params;
+    const [containerTemp, setContainerTemp] = useState('Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)');
+    // const sliceIndex = containerTemp.indexOf("\n");
 
-    const [containerTemp, setContainerTemp] = useState('Fridge Temperature (df - asd deg F/ dfa - dfas deg C');
+    // const finalTemp = containerTemp.slice(0, sliceIndex + 1);
+    
 
     return (
       <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
@@ -137,12 +143,6 @@ function TutorialScreen({ route, navigation }) {
             <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
               Set up your {"\n"} first container
             </Text>
-            {/* <Text style={[styles.smalltext, styles.textDefault]}>
-            This is the location you'll use to
-          </Text>
-          <Text style={[styles.smalltext, styles.textDefault, {marginBottom: 16}]}>
-            store your foods
-          </Text> */}
 
             <View style={[styles.horizontalRule]} />
           </View>
@@ -169,7 +169,7 @@ function TutorialScreen({ route, navigation }) {
           <View style={{ marginTop: 20 }}>
             <Pressable
               style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-              onPress={() => navigation.navigate("ContainerSetup-3")}
+              onPress={() => navigation.navigate("ContainerSetup-3", {containerName: containerName, containerTemp: containerTemp, userId: userId})}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
@@ -180,7 +180,9 @@ function TutorialScreen({ route, navigation }) {
     );
   };
 
-  function ContainerSetup3({ navigation }) {
+  function ContainerSetup3({ route, navigation }) {
+
+    const {containerName, containerTemp, userId} = route.params;
 
     const [expiryDate, setExpiryDate] = useState(true);
     const [dateBought, setDateBought] = useState(false);
@@ -193,28 +195,8 @@ function TutorialScreen({ route, navigation }) {
     const [yesterdayDate, setYesterdayDate] = useState('');
     const [twoDaysAgo, setTwoDaysAgo] = useState('');
     // const [fewDaysAgo, setFewDaysAgo] = useState('');
-    // type FadeInViewProps = PropsWithChildren<{style: ViewStyle}>;
 
-    // const FadeInView: React.FC<FadeInViewProps> = props => {
-    //   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
-
-    //   useEffect(() => {
-    //     Animated.timing(fadeAnim, {
-    //       toValue: 1,
-    //       duration: 10000,
-    //       useNativeDriver: true,
-    //     }).start();
-    //   }, [fadeAnim]);
-
-    //   return (
-    //     <Animated.View // Special animatable View
-    //       style={{
-    //         opacity: fadeAnim, // Bind opacity to animated value
-    //       }}>
-    //       {props.children}
-    //     </Animated.View>
-    //   );
-    // };
+    const factorsList = [expiryDate, dateBought, itemQuantity, dateStored, itemCategory, dateOpened];
 
 
     useEffect(() => {
@@ -235,24 +217,7 @@ function TutorialScreen({ route, navigation }) {
     }, []);
 
     const [modalVisibility, setModalVisibility] = useState(false);
-    // type titleTest = {
-    //   label: string;
-    // };
 
-    // const titleAddition = ({titleTest}) => {
-    //   return (
-    //     <View>
-    //       <Text>
-    //         {titleTest}
-    //       </Text>
-    //     <Image
-    //            source={require('../assets/images/cooked-tag.png')}
-    //            style={{ borderRadius: 7, width: 150, height: 100, resizeMode: 'stretch'}}
-
-    //          />
-    //  </View>
-    //   )
-    // }
 
     return (
       <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
@@ -387,42 +352,6 @@ function TutorialScreen({ route, navigation }) {
                 </Pressable>
               </View>
 
-
-
-
-
-
-
-
-              {/* <View style={{ flexDirection: 'row', zIndex: 1 }}>
-                  <View>
-                    <Image
-                      source={require('../assets/images/cooked-tag.png')}
-                      style={{ width: 40, height: 20, resizeMode: 'contain' }}
-                    />
-                  </View>
-
-                  <View>
-                    <Image
-                      source={require('../assets/images/raw-tag.png')}
-                      style={{ width: 40, height: 20, resizeMode: 'contain' }}
-                    />
-                  </View>
-                  <View style={{ backgroundColor: '#97D4EE', paddingVertical: 10, paddingHorizontal: 20, width: 'auto', borderRadius: 20, flexDirection: 'row' }}>
-
-                    <Image
-                      source={require('../assets/images/meal-icon.png')}
-                      style={{ width: 40, height: 10, resizeMode: 'contain', }}
-                    />
-                    <Text style={[styles.textDefault]}>
-                      Meal
-                    </Text>
-                  </View>
-                </View> */}
-
-
-
-
               <CheckBox
                 title="Date Opened"
                 checked={dateOpened}
@@ -505,7 +434,8 @@ function TutorialScreen({ route, navigation }) {
           <View style={{ marginTop: 20 }}>
             <Pressable
               style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-              onPress={() => navigation.navigate("FoodSetup-1")}
+              // onPress={() => navigation.navigate("FoodSetup-1")}
+              onPress={() => addContainer(containerName, containerTemp, factorsList, userId)}
             >
               <Text
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
@@ -517,12 +447,7 @@ function TutorialScreen({ route, navigation }) {
 
         </View>
 
-        {/* <TouchableOpacity
-            >
-              <View
-              style={{backgroundColor: modalVisibility ? 'rgba(7, 7, 7, 0.56)' : '#00000', height: '100%'}}
-              />
-            </TouchableOpacity> */}
+
 
         <View>
           <Modal
@@ -580,15 +505,9 @@ function TutorialScreen({ route, navigation }) {
             </View>
           </Modal>
         </View>
-
-
-
-
-
-      </SafeAreaView >
+      </SafeAreaView>
     );
   };
-
 
   function FoodSetup1({ navigation }) {
 
@@ -672,7 +591,7 @@ function TutorialScreen({ route, navigation }) {
 
   return (
     <Tutorial.Navigator
-      initialRouteName="ContainerSetup-3"
+      initialRouteName="ContainerSetup-1"
       screenOptions={{
         headerShown: false
       }}>

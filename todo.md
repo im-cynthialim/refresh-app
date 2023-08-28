@@ -77,6 +77,8 @@ Main Components:
 
 ### figure out backend
 
+**- bc containerName is part of db link, need to ensure that container names never repeat**
+
 - expand container design
 - new container design
 - tutorial page w container + foods setup
