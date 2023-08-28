@@ -456,26 +456,18 @@ function TutorialScreen({ route, navigation }) {
 
                 />
               </View>
+
               <View style={{ paddingLeft: '5%', gap: 7, width: '50%' }}>
-                <Text style={[styles.textDefault, { color: '#021E20', fontSize: 18 }]}>
-                  Tomatoes
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                  <Text style={[styles.textDefault, { color: '#021E20', fontSize: 18 }]}>
+                    Tomatoes
+                  </Text>
 
-                {/* <Text style={[styles.regularFont, { color: dateStored ? "#021E20" : '#FBFEFB', fontSize: 10 }]}>
-                  {yesterdayDate}
-                </Text>
-
-                <Text style={[styles.regularFont, { color: expiryDate ? "#9AB725" : '#FBFEFB', fontSize: 10 }]}>
-                  2 days
-                </Text>
-
-                <Text style={[styles.regularFont, { color: dateOpened ? "#B0B6B3" : '#FBFEFB', fontSize: 10 }]}>
-                  Date Opened: {yesterdayDate}
-                </Text>
-
-                <Text style={[styles.regularFont, { color: dateBought ? "#B0B6B3" : '#FBFEFB', fontSize: 10 }]}>
-                  Date Bought: {twoDaysAgo}
-                </Text> */}
+                  <Image
+                    source={require('../assets/images/raw-tag.png')}
+                    style={{ opacity: itemCategory ? 1 : 0, width: 30, height: 15, resizeMode: 'center' }}
+                  />
+                </View>
 
                 <Text style={[styles.regularFont, { color: "#021E20", opacity: dateStored ? 100 : 0, position: dateStored ? 'relative' : 'absolute', fontSize: 10 }]}>
                   {yesterdayDate}
@@ -495,7 +487,8 @@ function TutorialScreen({ route, navigation }) {
 
               </View>
 
-              <View style={{}}>
+
+              <View>
                 <Text style={[styles.textDefault, styles.label, { color: itemQuantity ? "#021E20" : '#FBFEFB', fontSize: 18 }]}>
                   4
                 </Text>
@@ -535,40 +528,54 @@ function TutorialScreen({ route, navigation }) {
           <Modal
             isVisible={modalVisibility}
             animationInTiming={200}
-            style={{ margin: 0, }}
+            style={{ margin: 0 }}
             // backdropColor='rgb(7,7,7)'
             backdropOpacity={0.56}
             onBackdropPress={() => setModalVisibility(false)}
             onSwipeComplete={() => setModalVisibility(false)}
             swipeDirection={'down'}
           >
-            <View style={{ backgroundColor: '#FBFEFB', marginTop: '110%', justifyContent: 'center', paddingLeft: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+            <View style={{ backgroundColor: '#FBFEFB', marginTop: '110%', justifyContent: 'center', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+              {/* <View style={{justifyContent: 'center'}}> */}
+              <Text style={[styles.textDefault, styles.label, { color: '#96979C', textAlign: 'center' }]}>
+                Indicate the state of foods in your container
+              </Text>
+              {/* </View> */}
+              <View style={{ gap: 10 }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={require('../assets/images/raw-tag.png')}
+                    style={{ width: 120, height: 55, resizeMode: 'center' }}
+                  />
+                  <View style={{ paddingLeft: '5%' }}>
+                    <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Raw Food </Text>
+                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C', width: '65%' }]}>Includes items such as fresh produce and uncooked meat </Text>
+                  </View>
+                </View>
 
-            <Text style={[styles.textDefault, styles.label]}>
-              Item Categories
-            </Text>
-      <View style={{gap: 10}}>
-              <View>
-                <Image
-                  source={require('../assets/images/cooked-tag.png')}
-                  style={{ width: 120, height: 50, resizeMode: 'center' }}
-                />
-              </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={require('../assets/images/cooked-tag.png')}
+                    style={{ width: 120, height: 55, resizeMode: 'center' }}
+                  />
+                  <View style={{ paddingLeft: '5%' }}>
+                    <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Cooked Food </Text>
+                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C' }]}>Includes all cooked items </Text>
+                  </View>
+                </View>
 
-              <View>
-                <Image
-                  source={require('../assets/images/raw-tag.png')}
-                  style={{ width: 120, height: 50, resizeMode: 'center' }}
-                />
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={require('../assets/images/meal-tag.png')}
+                    style={{ width: 120, height: 55, resizeMode: 'center' }}
+                  />
+                  <View style={{ paddingLeft: '5%' }}>
+                    <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Meal </Text>
+                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C', width: '50%' }]}>Includes items composed of multiple foods, such as yesterday's pasta dinner </Text>
+                  </View>
+                </View>
+
               </View>
-              {/* <View style={{ backgroundColor: '#97D4EE', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 20, flexDirection: 'row' }}> */}
-              <View>
-                <Image
-                  source={require('../assets/images/meal-tag.png')}
-                  style={{ width: 120, height: 50, resizeMode: 'center' }}
-                />
-              </View>
-            </View>
 
             </View>
           </Modal>
