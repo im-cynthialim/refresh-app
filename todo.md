@@ -43,6 +43,7 @@ Tutorial:
 
 ### Additional
 
+- Item category pushing down components underneath when opened, want the dropdown to open on top of everything
 - Font size of wheel relative to rest of screen (test on other devices)
 - Color! (Might need to change, + make sure all dark fonts are extreme dark color)
 - Button highlight for checkboxes on CS-3 screen
@@ -51,6 +52,9 @@ Tutorial:
 ### Notes
 
 - Toast notification or page for added container?
+
+modal library:
+dropdown library: `https://www.npmjs.com/package/react-native-dropdown-select-list`
 
 ### Completed
 
