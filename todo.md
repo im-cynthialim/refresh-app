@@ -93,6 +93,7 @@ Main Components:
     
 ## Design decisions
 
+- using this.setState vs setState?
 - replace Flatlist w Sectionlist?
 - custom option for container temp?
 

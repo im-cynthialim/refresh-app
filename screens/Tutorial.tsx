@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import type { PropsWithChildren } from 'react';
 import type { ViewStyle } from 'react-native';
 import Modal from "react-native-modal";
-import { Text, TextInput, View, Image, Pressable } from 'react-native';
+import { Text, TextInput, View, Image, Pressable, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
@@ -448,12 +448,15 @@ function TutorialScreen({ route, navigation }) {
             onSwipeComplete={() => setModalVisibility(false)}
             swipeDirection={'down'}
           >
-            <View style={{ backgroundColor: '#FBFEFB', marginTop: '110%', justifyContent: 'center', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
-              {/* <View style={{justifyContent: 'center'}}> */}
-              <Text style={[styles.textDefault, styles.label, { color: '#96979C', textAlign: 'center' }]}>
-                Indicate the state of foods in your container
-              </Text>
-              {/* </View> */}
+            <View style={{ backgroundColor: '#FBFEFB', marginTop: '75%', justifyContent: 'flex-start',paddingTop: '8%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+
+              <Text style={[styles.textDefault, styles.subtitle]}>
+                    Item Category
+                  </Text>
+                  <Text style={[styles.regularFont, { paddingTop: 5, paddingBottom: 15, fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
+                    Indicate the state of foods in your container with one of the following tags
+                  </Text>
+
               <View style={{ gap: 10 }}>
                 <View style={{ flexDirection: 'row' }}>
                   <Image
@@ -462,7 +465,7 @@ function TutorialScreen({ route, navigation }) {
                   />
                   <View style={{ paddingLeft: '5%' }}>
                     <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Raw Food </Text>
-                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C', width: '65%' }]}>Includes items such as fresh produce and uncooked meat </Text>
+                    <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C', width: '50%' }]}>Includes items such as fresh produce and uncooked meat </Text>
                   </View>
                 </View>
 
@@ -473,7 +476,7 @@ function TutorialScreen({ route, navigation }) {
                   />
                   <View style={{ paddingLeft: '5%' }}>
                     <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Cooked Food </Text>
-                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C' }]}>Includes all cooked items </Text>
+                    <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C' }]}>Includes all cooked items </Text>
                   </View>
                 </View>
 
@@ -484,13 +487,24 @@ function TutorialScreen({ route, navigation }) {
                   />
                   <View style={{ paddingLeft: '5%' }}>
                     <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Meal </Text>
-                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C', width: '50%' }]}>Includes items composed of multiple foods, such as yesterday's pasta dinner </Text>
+                    <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C', width: '40%' }]}>Includes items composed of multiple foods, such as yesterday's pasta dinner </Text>
                   </View>
                 </View>
 
               </View>
+               
+              <View style={{alignItems: 'center', paddingTop: 20}}>
+                <Pressable
+                  style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+                  onPress={() => setModalVisibility(false)}
+                >
+                  <Text
+                    style={[styles.textDefault, styles.buttonText]}> Close </Text>
+                </Pressable>
+                </View>
 
             </View>
+
           </Modal>
         </View>
       </SafeAreaView>
@@ -542,6 +556,13 @@ function TutorialScreen({ route, navigation }) {
     const [ptModalVisibility, setPTModalVisibility] = useState(false);
     const [cModalVisibility, setCModalVisibility] = useState(false);
 
+    const numberField = (text) => {
+      if (/^[0-9]+$/.test(text) || text === '') {
+        setProductQuantity(text);
+      }
+
+
+    }
 
     return (
       <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
@@ -555,9 +576,10 @@ function TutorialScreen({ route, navigation }) {
           <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%', height: 10 }} />
 
         </View>
-
+        
+        {/* <ScrollView>   */}
         <View style={{ alignItems: 'center', gap: 25, paddingTop: 30 }}>
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: 'center'}}>
             <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
               Add your food
             </Text>
@@ -567,7 +589,10 @@ function TutorialScreen({ route, navigation }) {
           </View>
 
           {/* product line */}
-          <View style={{ paddingHorizontal: '2%', flexDirection: 'row', gap: 10 }}>
+          {/* <View style={{alignItems: 'flex-start'}}> */}
+
+           
+          <View style={{ paddingHorizontal: '2%', alignSelf: 'flex-start', paddingLeft: 40, flexDirection: 'row', gap: 20 }}>
             <View style={{ width: '30%' }}>
               <TextLabel label="product name" />
               <TextInput
@@ -626,8 +651,9 @@ function TutorialScreen({ route, navigation }) {
               <TextInput
                 placeholder={'1'}
                 placeholderTextColor={'#B0B6B3'}
+                keyboardType='numeric'
                 value={productQuantity}
-                onChangeText={text => setProductQuantity(text)}
+                onChangeText={text => numberField(text)}
                 style={{
                   fontFamily: 'Rubik-Medium',
                   backgroundColor: "#F2F2F2",
@@ -640,7 +666,124 @@ function TutorialScreen({ route, navigation }) {
               />
             </View>
           </View>
-          <View style={{ marginTop: 20 }}>
+          {/* category line */}
+          <View style={{alignSelf: 'flex-start', paddingLeft: 40}}>
+            <View style={{ width: '30%' }}>
+              <View style={{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }}>
+                <Text style={[styles.textDefault, { fontSize: 14, color: '#052B2D' }]}>
+                  item category
+                </Text>
+
+                <Pressable style={{ paddingLeft: 5 }}
+                  onPress={() => setCModalVisibility(!cModalVisibility)}
+                >
+                  <Icon
+                    name="info"
+                    type='feather'
+                    color="#021E20"
+                    size={15}
+                  />
+
+                </Pressable>
+              </View>
+
+              <TextInput
+                placeholder={'Tomatoes'}
+                placeholderTextColor={'#B0B6B3'}
+                value={productCategory}
+                onChangeText={text => setProductCategory(text)}
+                style={{
+                  fontFamily: 'Rubik-Medium',
+                  backgroundColor: "#F2F2F2",
+                  color: '#052B2D',
+                  paddingHorizontal: 12,
+                  borderRadius: 3,
+                  justifyContent: 'center',
+                  paddingVertical: 14,
+                }}/>
+                </View>
+        
+
+          </View>
+          {/* date line */}
+          <View style={{ paddingHorizontal: '2%', alignSelf: 'flex-start', paddingLeft: 40, flexDirection: 'row', gap: 20 }}>
+            <View style={{ width: '30%' }}>
+              <TextLabel label="date bought" />
+              <TextInput
+                placeholder={'DD/MM/YYYY'}
+                placeholderTextColor={'#B0B6B3'}
+                value={dateBought}
+                onChangeText={text => setDateBought(text)}
+                style={{
+                  fontFamily: 'Rubik-Medium',
+                  backgroundColor: "#F2F2F2",
+                  color: '#052B2D',
+                  paddingHorizontal: 12,
+                  borderRadius: 3,
+                  justifyContent: 'center',
+                  paddingVertical: 14,
+                }}
+              />
+            </View>
+            <View style={{ width: '30%' }}>
+              <TextLabel label="date stored" />
+              <TextInput
+                placeholder={'DD/MM/YYYY'}
+                placeholderTextColor={'#B0B6B3'}
+                value={dateStored}
+                onChangeText={text => setDateStored(text)}
+                style={{
+                  fontFamily: 'Rubik-Medium',
+                  backgroundColor: "#F2F2F2",
+                  color: '#052B2D',
+                  paddingHorizontal: 12,
+                  borderRadius: 3,
+                  justifyContent: 'center',
+                  paddingVertical: 14,
+                }}
+              />
+            </View>
+            <View style={{ width: '30%' }}>
+              <TextLabel label="date opened" />
+              <TextInput
+                placeholder={'DD/MM/YYYY'}
+                placeholderTextColor={'#B0B6B3'}
+                value={dateOpened}
+                onChangeText={text => setDateOpened(text)}
+                style={{
+                  fontFamily: 'Rubik-Medium',
+                  backgroundColor: "#F2F2F2",
+                  color: '#052B2D',
+                  paddingHorizontal: 12,
+                  borderRadius: 3,
+                  justifyContent: 'center',
+                  paddingVertical: 14,
+                }}
+              />
+            </View>
+          </View>
+
+          <View style={{ alignSelf: 'flex-start', marginLeft: 40 }}>
+              <TextLabel label="personal notes" />
+              <TextInput
+                placeholder={'personal notes'}
+                placeholderTextColor={'#B0B6B3'}
+                value={personalNotes}
+                onChangeText={text => addPersonalNotes(text)}
+                style={{
+                  fontFamily: 'Rubik-Medium',
+                  backgroundColor: "#F2F2F2",
+                  color: '#052B2D',
+                  paddingHorizontal: 12,
+                  borderRadius: 3,
+                  justifyContent: 'center',
+                  paddingVertical: 14,
+                }}
+              />
+          </View>
+
+
+          <View style={{ marginTop: 20, alignSelf: 'center' }}>
             <Pressable
               style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
               // onPress={() => addContainer(containerName, userId)}
@@ -650,8 +793,12 @@ function TutorialScreen({ route, navigation }) {
                 style={[styles.textDefault, styles.buttonText]}> Next </Text>
             </Pressable>
           </View>
-        </View>
+          
 
+
+          
+
+          
         {/* pt modal */}
         <View>
           <Modal
@@ -665,7 +812,6 @@ function TutorialScreen({ route, navigation }) {
             swipeDirection={'down'}
           >
             <View style={{ backgroundColor: '#FBFEFB', marginTop: '90%', justifyContent: 'flex-start', paddingTop: '8%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
-
 
 
                 <View style={{alignItems: 'flex-start' }}>
@@ -698,15 +844,15 @@ function TutorialScreen({ route, navigation }) {
                 <View style={{alignItems: 'center', paddingTop: 10}}>
                 <Pressable
                   style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-                  // onPress={() => addContainer(containerName, userId)}
                   onPress={() => setPTModalVisibility(false)}
                 >
                   <Text
                     style={[styles.textDefault, styles.buttonText]}> Close </Text>
                 </Pressable>
                 </View>
+                
               </View>
-
+              
           </Modal>
         </View>
 
@@ -722,12 +868,15 @@ function TutorialScreen({ route, navigation }) {
             onSwipeComplete={() => setCModalVisibility(false)}
             swipeDirection={'down'}
           >
-            <View style={{ backgroundColor: '#FBFEFB', marginTop: '110%', justifyContent: 'center', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
-              {/* <View style={{justifyContent: 'center'}}> */}
-              <Text style={[styles.textDefault, styles.label, { color: '#96979C', textAlign: 'center' }]}>
-                Indicate the state of foods in your container
-              </Text>
-              {/* </View> */}
+            <View style={{ backgroundColor: '#FBFEFB', marginTop: '75%', justifyContent: 'flex-start',paddingTop: '8%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+
+              <Text style={[styles.textDefault, styles.subtitle]}>
+                    Item Category
+                  </Text>
+                  <Text style={[styles.regularFont, { paddingTop: 5, paddingBottom: 15, fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
+                    Indicate the state of foods in your container with one of the following tags
+                  </Text>
+
               <View style={{ gap: 10 }}>
                 <View style={{ flexDirection: 'row' }}>
                   <Image
@@ -736,7 +885,7 @@ function TutorialScreen({ route, navigation }) {
                   />
                   <View style={{ paddingLeft: '5%' }}>
                     <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Raw Food </Text>
-                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C', width: '65%' }]}>Includes items such as fresh produce and uncooked meat </Text>
+                    <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C', width: '50%' }]}>Includes items such as fresh produce and uncooked meat </Text>
                   </View>
                 </View>
 
@@ -747,7 +896,7 @@ function TutorialScreen({ route, navigation }) {
                   />
                   <View style={{ paddingLeft: '5%' }}>
                     <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Cooked Food </Text>
-                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C' }]}>Includes all cooked items </Text>
+                    <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C' }]}>Includes all cooked items </Text>
                   </View>
                 </View>
 
@@ -758,16 +907,31 @@ function TutorialScreen({ route, navigation }) {
                   />
                   <View style={{ paddingLeft: '5%' }}>
                     <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Meal </Text>
-                    <Text style={[styles.regularFont, styles.smalltext, { color: '#96979C', width: '50%' }]}>Includes items composed of multiple foods, such as yesterday's pasta dinner </Text>
+                    <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C', width: '40%' }]}>Includes items composed of multiple foods, such as yesterday's pasta dinner </Text>
                   </View>
                 </View>
 
               </View>
+               
+              <View style={{alignItems: 'center', paddingTop: 20}}>
+                <Pressable
+                  style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+                  onPress={() => setCModalVisibility(false)}
+                >
+                  <Text
+                    style={[styles.textDefault, styles.buttonText]}> Close </Text>
+                </Pressable>
+                </View>
 
             </View>
 
           </Modal>
+          
         </View>
+        </View>
+        {/* </ScrollView> */}
+
+
       </SafeAreaView>
     );
   };
