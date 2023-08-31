@@ -23,19 +23,19 @@ export function HomeScreen({ route, navigation }) {
         const dataList = [];
         const foodItemList = [];
         snapshot.forEach((childSnapshot) => {
-          const childKey = childSnapshot.key;
           const childData = childSnapshot.val();
           dataList.push(childData);
           // console.log(childData.foodList)
-          foodItemList.push(childData.foodList);
-          // childSnapshot.val().foodList.forEach((foodItem) => {
+          // foodItemList.push(childData.foodList);
+          // childData.foodList.forEach((foodItem) => {
           //   foodItemList.push(foodItem);
           // })
+          
           
           // console.log(childData.containerName)
           // const dataList = [childData.containerName, childData.foodList]
         })
-        console.log(foodItemList);
+        // console.log(foodItemList);
         
         resolve(dataList);
       });
@@ -62,7 +62,7 @@ async function getData (){
 getData();
 }, [userId, containerName]);
 
-console.log(DATA);
+// console.log(DATA);
 
 
   // const DATA: ItemData[] =[
@@ -103,37 +103,28 @@ console.log(DATA);
   //   products: ["tomato", "lettuce", "burger"],
   // },
 
-
-
-  // type ItemData = {
-  //   name: string;
-  //   description: string;
-  //   products: string[];
-  // };
-
-  // type ItemData = {
-  //   containerName: string;
-  //   containerTemp: string;
-  //   factorsList: string[];
-  //   foodlist: string[];
-
-  // };
-
-
   type ItemData = {
     containerName: string;
     containerTemp: string;
     foodList: ItemProduct[];
   }
 
+  type ItemProduct = {
+    productName: string;
+    productType: string;
+    productQuantity: number;
+    productCategory: string;
+    dateBought: string;
+    dateStored: string;
+    dateOpened: string;
+    personalNotes: string;
+
+  }
+
   type ItemProps = {
     item: ItemData;
   };
 
-  type ItemProduct = {
-    name: string;
-    note: string;
-  };
 
   type inputData = {
     searchinput: string;
@@ -155,7 +146,7 @@ console.log(DATA);
             justifyContent: 'space-between',
           }}>
 
-          <Text style={[styles.subtitle, { color: '#FBFEFB' }]}> {item.containerName}</Text>
+          <Text style={[styles.subtitle, { color: '#FBFEFB' }]}>{item.containerName}</Text>
           <Pressable
             style={{
               justifyContent: 'center',
@@ -183,13 +174,13 @@ console.log(DATA);
             />
           </Pressable>
         </View>
-        <Text style={{ color: '#FBFEFB', paddingVertical: 10 }}> {item.containerTemp}</Text>
+        {/* <Text style={{ color: '#FBFEFB', paddingVertical: 10 }}> {item.containerTemp}</Text> */}
         {/* <ContainerDisplay productlist={item.products}/> */}
 
         <FlatList
           showsHorizontalScrollIndicator={false}
           horizontal={true}
-          data={item.foodList.productName}
+          data={item.foodList}
           renderItem={renderItemContainer}
         // keyExtractor={item => item.toString()}
         />
@@ -199,7 +190,8 @@ console.log(DATA);
   };
 
   //renders produce in each container
-  const renderItemContainer = ({ item }: { item: productData }) => {
+  // Define each item as this type of object, then retrieve specific components and display
+  const renderItemContainer = ({ item }: { item: ItemProduct }) => {
     return (
 
       <View style={{ marginRight: 7 }}>
@@ -213,7 +205,7 @@ console.log(DATA);
             width: 107,
             height: 65,
           }} />
-        <Text style={{ color: '#fbfefb' }}> {item} </Text>
+        <Text style={{ color: '#fbfefb' }}>{item.productName} </Text>
         <Text style={{ color: '#fbfefb' }}>expiry date here</Text>
       </View>
 

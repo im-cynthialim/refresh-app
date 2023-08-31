@@ -1,0 +1,42 @@
+{
+    "userprofiles": {
+      "{\"userId\":\"sEXeq7pzI7X7DhPG4MyQw97p9HF2\"}": {
+        "containers": {
+          "\"Freezer\"": {
+            "containerName": "Freezer",
+            "containerTemp": "Freezer Temperature \n(0 °F / -18 °C)",
+            "factorsList": [
+              true,
+              false,
+              true,
+              true,
+              false,
+              false
+            ],
+            "foodList": {
+              "dateBought": "",
+              "dateOpened": "",
+              "dateStored": "",
+              "personalNotes": "",
+              "productCategory": "1",
+              "productName": "Ice",
+              "productQuantity": "5",
+              "productType": "Ice!"
+            }
+          },
+          "\"Fridge\"": {
+            "containerName": "Fridge",
+            "containerTemp": "Fridge Temperature (35-38 °F / 1.6-3.3 °C)",
+            "foodList": [
+         `  ` {
+                "productName": "Potatoes"
+              },
+              {
+                "productName": "Tomatoes"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
