@@ -9,16 +9,22 @@ import TutorialScreen from './screens/Tutorial';
 import HomeScreen from './screens/Home';
 import ExpandContainerScreen from './screens/ExpandContainer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createIconSetFromFontello } from 'react-native-vector-icons';
+// import fontelloConfig from './assets/icons/config.json';
+import { registerCustomIconType } from '@rneui/base';
+import { Icon } from '@rneui/themed';
 
 import * as Font from 'expo-font'
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
   
 let customFonts = {
   'Rubik-Medium': require('./styles/fonts/Rubik-Medium.ttf'),
   'Rubik-Regular': require('./styles/fonts/Rubik-Regular.ttf'),
+  // 'fontello': require('./styles/fonts/fontello.ttf'),
 };
 
 function NewContainerScreen({navigation}) {
@@ -61,7 +67,11 @@ function AccountScreen() {
   );
 }
 
-function MainScreen() {
+function MainScreen(route) {
+
+// const customFont = createIconSetFromFontello(fontelloConfig);
+// registerCustomIconType('home', customFont);
+
   return(
       <Tab.Navigator
         screenOptions = {{
@@ -88,14 +98,21 @@ function MainScreen() {
             component={HomeScreen} 
             options={{
               tabBarLabelStyle: {fontFamily: 'Rubik-Medium', fontSize: 9}, 
-              tabBarIcon: () => (  
-                <Image 
-                  source={require('./assets/images/homeicon.png')} 
-                  style={{
-                    height: 21,
-                    width: 18,
-                    marginTop: 8,
-                  }}/>
+              tabBarIcon: ({focused}) => (  
+                <Icon
+                name="home-filled"
+                type="material"
+                color = {focused ? '#248276' : '#96979C'}
+                size = {30}
+                iconStyle={{marginTop: 8}}
+                />
+                // <Image 
+                //   source={require('./assets/images/homeicon.png')} 
+                //   style={{
+                //     height: 21,
+                //     width: 18,
+                //     marginTop: 8,
+                //   }}/>
                 ),
               }}
             />
@@ -107,13 +124,13 @@ function MainScreen() {
             options={{
 
               tabBarLabelStyle: {fontFamily: 'Rubik-Medium', fontSize: 9}, 
-              tabBarIcon: () => (
+              tabBarIcon: ({focused}) => (
                 <Image 
                   source={require('./assets/images/alertsicon.png')} 
                   style={{
                     height: 22,
                     width: 21,
-                    marginTop: 8,
+                    marginTop: 5,
                   }}/>
                 ),
               }}/>
@@ -196,7 +213,7 @@ export default class App extends React.Component {
     return (
       <NavigationContainer>
          <Stack.Navigator 
-          initialRouteName="Signup"
+          initialRouteName="Login"
           screenOptions = {{
             headerShown: false
           }}>

@@ -1,0 +1,15 @@
+{
+    "productClassification": {
+     "tomatoes":{
+        "shelf": "until ripe",
+        "pantry": null,
+        "fridge": [2,3],
+        "freezer": 60
+     }
+     
+ 
+ 
+    }
+   }
+ 
+ 

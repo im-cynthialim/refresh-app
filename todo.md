@@ -69,6 +69,7 @@ dropdown library: `https://www.npmjs.com/package/react-native-dropdown-select-li
 - implement **container-specific** data in expand container page
 - welcome page before tutorial w explanation
 - option to skip tut (flow will include empty container)
+- history of where food has been stored (and for how long)
 
 ## Additional:
     

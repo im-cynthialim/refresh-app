@@ -37,8 +37,9 @@ function LogInScreen({ navigation }) {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
+        const userId = user.uid;
         console.log('Logged in with:', user.email);
-        navigation.navigate("Main")
+        navigation.navigate("Main", {screen: "Home", params: {userId: userId}})
       })
       .catch(error => alert(error.message))
   }

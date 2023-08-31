@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set, get, child} from 'firebase/database';
 import WheelPicker from 'react-native-wheely';
 import { CheckBox, Icon } from '@rneui/themed';
 import ConfettiCannon from 'react-native-confetti-cannon';
@@ -28,6 +28,8 @@ function TutorialScreen({ route, navigation }) {
         containerTemp: containerTemp,
         factorsList: factorsList
       });
+
+      
       navigation.navigate("FoodSetup", { containerName: containerName, userId: userId})
     }
 
@@ -52,6 +54,7 @@ function TutorialScreen({ route, navigation }) {
         dateOpened: dateOpened,
         personalNotes: personalNotes
       });
+      navigation.navigate("Main", {screen: "Home", params: {userId: userId, containerName: containerName}})
     }
 
     else {
@@ -186,7 +189,7 @@ function TutorialScreen({ route, navigation }) {
             </Text>
 
             <WheelPicker
-              options={['Room Temperature \n(70 °F / 21 °C)', 'Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)', 'Freezer Temperature \n(0 °F / -18 °C)']}
+              options={['Room Temperature \n(70 °F / 21 °C)', 'Pantry Temperature \n(50-70°F / 10-21 °C )', 'Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)', 'Freezer Temperature \n(0 °F / -18 °C)']}
               selected={'Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)'}
               onChange={(temp) => setContainerTemp(temp)}
               itemHeight={55}
