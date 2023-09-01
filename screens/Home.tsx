@@ -9,60 +9,56 @@ import { getDatabase, ref, child, get, onValue } from 'firebase/database';
 
 
 export function HomeScreen({ route, navigation }) {
-  const { userId, containerName } = route.params;
+  const { userId } = route.params;
   const dbRef = ref(getDatabase());
   const [DATA, setDATA] = useState([]);
   const db = getDatabase();
 
 
   function retrieveContent(userId) {
-  return new Promise((resolve, reject) => {
-    if (userId) {
-      const retrieveContentRef = ref(db, '/userprofiles/{"userId":"sEXeq7pzI7X7DhPG4MyQw97p9HF2"}/containers');
-      onValue (retrieveContentRef, (snapshot) => {
-        const dataList = [];
-        const foodItemList = [];
-        snapshot.forEach((childSnapshot) => {
-          const childData = childSnapshot.val();
-          dataList.push(childData);
-          // console.log(childData.foodList)
-          // foodItemList.push(childData.foodList);
-          // childData.foodList.forEach((foodItem) => {
-          //   foodItemList.push(foodItem);
-          // })
-          
-          
-          // console.log(childData.containerName)
-          // const dataList = [childData.containerName, childData.foodList]
-        })
-        // console.log(foodItemList);
-        
-        resolve(dataList);
+    return new Promise((resolve, reject) => {
+      if (userId) {
+        // console.log(JSON.stringify(userId))
+        // const retrieveContentRef = ref(db, '/userprofiles/{"userId":"sEXeq7pzI7X7DhPG4MyQw97p9HF2"}/containers');
+        // const retrieveContentRef = ref(db, '/userprofiles/'+ JSON.stringify(userId) + '/containers');
+        const retrieveContentRef = ref(db, '/userprofiles/' + JSON.stringify(userId) + '/containers');
+
+          onValue (retrieveContentRef, (snapshot) => {
+            const dataList = [];
+            snapshot.forEach((childSnapshot) => {
+              const childData = childSnapshot.val();
+              dataList.push(childData);
+              // console.log(childData)
+            })
+
+            resolve(dataList);
+        });
+      }
+
+      else {
+            reject(new Error('User does not exist'));
+      }
+       
       });
-    }
-    else{ 
-      reject (new Error ('Snapshot does not exist'));
-    }
-  });
-}
-
-useEffect(() => {
-async function getData (){
-  try{
-    const data = await(retrieveContent(userId));
-    // console.log(data.containerTemp);
-    setDATA(data);
-    // return data;
   }
-  catch (error){
-    console.log("error")
-  }
-}
 
-getData();
-}, [userId, containerName]);
+  useEffect(() => {
+    async function getData() {
+      try {
+        const data = await (retrieveContent(userId));
+        // console.log(data.containerTemp);
+        setDATA(data);
+        // return data;
+      }
+      catch (error) {
+        console.log("error")
+      }
+    }
 
-// console.log(DATA);
+    getData();
+  }, [userId]);
+
+  // console.log(DATA);
 
 
   // const DATA: ItemData[] =[

@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { getDatabase, ref, set, get, child} from 'firebase/database';
+import { getDatabase, ref, set, push, update} from 'firebase/database';
 import WheelPicker from 'react-native-wheely';
 import { CheckBox, Icon } from '@rneui/themed';
 import ConfettiCannon from 'react-native-confetti-cannon';
@@ -21,12 +21,15 @@ function TutorialScreen({ route, navigation }) {
 
   function addContainer(containerName, containerTemp, factorsList, userId) {
     const db = getDatabase();
+    // console.log("addcontainer" + JSON.stringify(userId));
     // if user has been defined (aka gone through proper signup)
     if (userId) {
+      console.log("Container Added")
+      // console.log(JSON.stringify(userId))
       set(ref(db, 'userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName)), {
         containerName: containerName,
         containerTemp: containerTemp,
-        factorsList: factorsList
+        factorsList: factorsList,
       });
 
       
@@ -44,7 +47,9 @@ function TutorialScreen({ route, navigation }) {
     const db = getDatabase();
     // if user has been defined (aka gone through proper signup)
     if (userId) {
-      set(ref(db, 'userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList/'), {
+      const foodData = 
+        [
+          {
         productName: productName,
         productType: productType,
         productQuantity: productQuantity,
@@ -53,8 +58,12 @@ function TutorialScreen({ route, navigation }) {
         dateStored: dateStored,
         dateOpened: dateOpened,
         personalNotes: personalNotes
-      });
-      navigation.navigate("Main", {screen: "Home", params: {userId: userId, containerName: containerName}})
+          }
+        ]
+        const updates = {};
+        updates ['userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList'] = foodData;
+        navigation.navigate("Main", {screen: "Home", params: {userId: userId}})
+        return update(ref(db), updates);    
     }
 
     else {
@@ -67,7 +76,7 @@ function TutorialScreen({ route, navigation }) {
 
 
   function ContainerSetup1({ route, navigation }) {
-    const userId = route.params;
+    const {userId} = route.params;
     const [containerName, setContainerName] = useState('')
     // const db = getDatabase();
 

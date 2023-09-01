@@ -51,15 +51,21 @@ Tutorial:
 
 ### Notes
 
+
 - Toast notification or page for added container?
 
 modal library:
 dropdown library: `https://www.npmjs.com/package/react-native-dropdown-select-list`
 
-### Completed
+### Completed 
 
 ~~- Fix modal, want to click out of it~~
+- P: losing containerName and all other data when adding new foods (Sep 1, 2023)
+    - S: Use update instead of set for adding food to container bc set replaces all information (containerName, containerTemp, factorsList) we added previously with foodList. We don't want that so just "push" (with update) to container instead (and we're pushing an array so that renderItem can correctly pull content) 
 
+- P: retrieving data from wrong location because of db link (Sep 1, 2023)
+    -  S: userId was being added as an object (because it was received as an object parameter to ContainerSetup1 from Signup) to the link when setting container, but in all other locations it was a string
+    - Solved with multiple console.log() lines to find where userId was being passed incorrectly 
 
 
 ## Tasks:
