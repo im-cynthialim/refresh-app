@@ -42,10 +42,26 @@
         ],
         "foodList": [
           {
-            "productName": "Cookies"
+            "productName": "Cookies",
+            "productType": "Dough",
+            "productQuantity": "5",
+            "productCategory": "raw",
+            "dateBought": "Aug 10, 2023",
+            "dateStored": "Aug 10, 2023",
+            "dateOpened": "Aug 10, 2023",
+            "personalNotes": "test 123"
+            
+
           },
           {
-            "productName": "Bread"
+            "productName": "Bread",
+            "productType": "Dough",
+            "productQuantity": "10",
+            "productCategory": "cooked",
+            "dateBought": "Aug 21, 2023",
+            "dateStored": "Aug 13, 2023",
+            "dateOpened": "Aug 15, 2023",
+            "personalNotes": "hello world"
           }
         ]
       },
@@ -54,10 +70,24 @@
         "containerTemp": "Fridge Temperature (35-38 °F / 1.6-3.3 °C)",
         "foodList": [
           {
-            "productName": "Potatoes"
+            "productName": "Potatoes",
+            "productType": "Potatoes",
+            "productQuantity": "11234",
+            "productCategory": "raw",
+            "dateBought": "Aug 21, 2023",
+            "dateStored": "Aug 13, 2023",
+            "dateOpened": "Aug 15, 2023",
+            "personalNotes": "hello world"
           },
           {
-            "productName": "Tomatoes"
+            "productName": "Tomatoes",
+            "productType": "Tomatoes",
+            "productQuantity": "20",
+            "productCategory": "raw",
+            "dateBought": "Aug 21, 2023",
+            "dateStored": "Aug 13, 2023",
+            "dateOpened": "Aug 15, 2023",
+            "personalNotes": "hello world 1234"
           }
         ]
       }

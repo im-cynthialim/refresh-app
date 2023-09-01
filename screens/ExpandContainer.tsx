@@ -92,19 +92,72 @@ function ExpandContainerScreen({ route, navigation }) {
   const renderItem = ({ item }: { item: ItemProduct }) => {
 
     return (
-      <View>
-        <Text>
-          {item.productName}
-        </Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginRight: 10}}>
 
-        {/* <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 10, marginTop: 20}}>
+        <View>
+          <Image
+            source={require('../assets/images/categories/tomatoes.png')}
+            style={{ borderRadius: 7, width: 150, height: 100, resizeMode: 'stretch' }}
+
+          />
+        </View>
+
+        <View style={{ paddingLeft: 20, gap: 7, width: 'auto' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+            <Text style={[styles.textDefault, { color: '#021E20', fontSize: 18 }]}>
+              {item.productName}
+            </Text>
+
+            <Image
+              source={require('../assets/images/raw-tag.png')}
+              style={{width: 30, height: 15, resizeMode: 'center'}}
+            />
+          </View>
+
+          <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+            {item.dateStored}
+          </Text>
+
+          <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+            EXPIRY DATE HERE
+          </Text>
+
+          <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+            Date Opened : {item.dateOpened}
+          </Text>
+
+          <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+            Date Bought: {item.dateBought}
+          </Text>
+
+        </View>
+      </View>
+
+        <View style={{marginTop: 20}}>
+          <Text style={[styles.textDefault, styles.label, {color: "#021E20", fontSize: 18 }]}>
+            {item.productQuantity}
+          </Text>
+
+        </View>
+
+
+    
+
+
+
+
+    </View>
+    );
+        /* <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
             <Text>{item.productlist.map((item) => (
                 <Text key={item.index}> {item.product} </Text>
             ))}
             </Text>
-            </View> */}
-      </View>
-    );
+            </View> */
+      // </View>
+    // );
   }
   //         <View style={{backgroundColor: '#052B2D', paddingVertical: 18, borderRadius: 8, paddingHorizontal: 19, marginTop: 9, marginHorizontal: 9, width: 'auto', height: 'auto'}}>
   //           <View
@@ -298,7 +351,7 @@ function ExpandContainerScreen({ route, navigation }) {
           <Text style={[styles.description, styles.regularFont, { width: '80%' }]}>Lorem ipsum dolor sit amet, - container desc here, have max # of chars </Text>
         </View>
       </SafeAreaView>
-      <View>
+      <View style={{}}>
         <FlatList
           data={itemData.foodList}
           renderItem={renderItem}>

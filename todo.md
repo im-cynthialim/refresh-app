@@ -67,6 +67,15 @@ dropdown library: `https://www.npmjs.com/package/react-native-dropdown-select-li
     -  S: userId was being added as an object (because it was received as an object parameter to ContainerSetup1 from Signup) to the link when setting container, but in all other locations it was a string
     - Solved with multiple console.log() lines to find where userId was being passed incorrectly 
 
+Expand Container:
+
+### To Do
+
+- Add filter button + filter
+
+### Additional
+
+### Notes
 
 ## Tasks:
 
