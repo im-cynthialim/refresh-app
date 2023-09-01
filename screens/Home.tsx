@@ -102,10 +102,10 @@ export function HomeScreen({ route, navigation }) {
   type ItemData = {
     containerName: string;
     containerTemp: string;
-    foodList: ItemProduct[];
+    foodList: ProductData[];
   }
 
-  type ItemProduct = {
+  type ProductData = {
     productName: string;
     productType: string;
     productQuantity: number;
@@ -117,24 +117,11 @@ export function HomeScreen({ route, navigation }) {
 
   }
 
-  type ItemProps = {
-    item: ItemData;
-  };
-
-
-  type inputData = {
-    searchinput: string;
-  };
-
-  type productData = {
-    productlist: string[];
-  };
-
   //renders each container from data
   const renderItem = ({ item }: { item: ItemData }) => {
 
     return (
-      <View style={{ backgroundColor: '#052B2D', paddingVertical: 18, borderRadius: 8, paddingHorizontal: 19, marginTop: 9, marginHorizontal: 9, width: 'auto', height: 'auto' }}>
+      <View style={{ backgroundColor: '#021E20', paddingVertical: 18, borderRadius: 8, paddingHorizontal: 19, marginTop: 9, marginHorizontal: 9, width: 'auto', height: 'auto' }}>
         <View
           style={{
             flexDirection: 'row',
@@ -142,20 +129,22 @@ export function HomeScreen({ route, navigation }) {
             justifyContent: 'space-between',
           }}>
 
-          <Text style={[styles.subtitle, { color: '#FBFEFB' }]}>{item.containerName}</Text>
+          <Text style={[styles.title, styles.textDefault, { color: '#FBFEFB' }]}>{item.containerName}</Text>
           <Pressable
             style={{
               justifyContent: 'center',
               alignContent: 'center',
-              borderWidth: 1,
+              borderWidth: 0,
               backgroundColor: '#FBFEFB',
               borderRadius: 37,
-              width: 25,
-              height: 17,
+              width: 35,
+              height: 20,
             }}
+            
             onPress={
               () => navigation.navigate("ExpandContainer", {
-                itemdata: { item },
+                itemData: item,
+                userId: userId
               })
             }
           >
@@ -164,14 +153,12 @@ export function HomeScreen({ route, navigation }) {
               style={{
                 alignSelf: 'center',
                 transform: [{ rotateY: '180deg' }],
-                width: 4.5,
-                height: 7,
+                width: 5,
+                height: 10,
               }}
             />
           </Pressable>
         </View>
-        {/* <Text style={{ color: '#FBFEFB', paddingVertical: 10 }}> {item.containerTemp}</Text> */}
-        {/* <ContainerDisplay productlist={item.products}/> */}
 
         <FlatList
           showsHorizontalScrollIndicator={false}
@@ -187,22 +174,21 @@ export function HomeScreen({ route, navigation }) {
 
   //renders produce in each container
   // Define each item as this type of object, then retrieve specific components and display
-  const renderItemContainer = ({ item }: { item: ItemProduct }) => {
+  const renderItemContainer = ({ item }: { item: ProductData }) => {
     return (
 
-      <View style={{ marginRight: 7 }}>
-        {/* <Text>
-            {item}
-          </Text> */}
+      <View style={{ marginRight: 15 }}>
         <Image
           source={require('../assets/images/categories/tomatoes.png')}
           style={{
+            marginTop: 10,
+            resizeMode: 'stretch',
             borderRadius: 5,
             width: 107,
-            height: 65,
+            height: 70,
           }} />
-        <Text style={{ color: '#fbfefb' }}>{item.productName} </Text>
-        <Text style={{ color: '#fbfefb' }}>expiry date here</Text>
+        <Text style={[styles.label, styles.textDefault, {fontSize: 18, marginBottom: 0, color: '#fbfefb', paddingTop: 5}]}>{item.productName} </Text>
+        <Text style={{ color: '#fbfefb', paddingTop: 2}}>expiry date here</Text>
       </View>
 
     );

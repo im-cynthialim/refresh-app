@@ -24,7 +24,7 @@ function TutorialScreen({ route, navigation }) {
     // console.log("addcontainer" + JSON.stringify(userId));
     // if user has been defined (aka gone through proper signup)
     if (userId) {
-      console.log("Container Added")
+      // console.log("Container Added")
       // console.log(JSON.stringify(userId))
       set(ref(db, 'userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName)), {
         containerName: containerName,
