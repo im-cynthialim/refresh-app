@@ -35,7 +35,6 @@ const SignUpScreen = () => {
       .then((userCredential) => {
         const user = userCredential.user;
           const userId = user.uid;
-          console.log(userId);
           console.log('Registered with:', user.email);
           navigation.navigate('Tutorial', {screen: 'ContainerSetup-1', params: {userId: userId}});
        

@@ -1,13 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Image, View, Text } from 'react-native';
+import { Image, Pressable, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { getAuth } from "firebase/auth";
 import SignUpPage  from './screens/SignUp';
 import LogInScreen from './screens/LogIn';
 import TutorialScreen from './screens/Tutorial';
 import HomeScreen from './screens/Home';
 import ExpandContainerScreen from './screens/ExpandContainer';
+import LogFoodScreen from './screens/LogFood';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createIconSetFromFontello } from 'react-native-vector-icons';
 // import fontelloConfig from './assets/icons/config.json';
@@ -43,13 +44,7 @@ function AlertsScreen() {
   );
 }
 
-function LogFoodScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Log Food</Text>
-    </View>
-  );
-}
+
 
 function RecipesScreen() {
   return (
@@ -67,7 +62,12 @@ function AccountScreen() {
   );
 }
 
-function MainScreen(route) {
+
+
+
+
+function MainScreen() {
+ 
 
 // const customFont = createIconSetFromFontello(fontelloConfig);
 // registerCustomIconType('home', customFont);
@@ -106,13 +106,6 @@ function MainScreen(route) {
                 size = {30}
                 iconStyle={{marginTop: 8}}
                 />
-                // <Image 
-                //   source={require('./assets/images/homeicon.png')} 
-                //   style={{
-                //     height: 21,
-                //     width: 18,
-                //     marginTop: 8,
-                //   }}/>
                 ),
               }}
             />
@@ -139,9 +132,11 @@ function MainScreen(route) {
             name = "LogFood" 
             component={LogFoodScreen}
             options={{
+
               tabBarActiveTintColor: '#67B99A',
               tabBarLabelStyle: {fontFamily: 'Rubik-Medium', fontSize: 9, color: 'transparent'}, 
               tabBarIcon: () => (
+            
                 <Image 
                   source={require('./assets/images/logicon.png')} 
                   style={{
@@ -220,7 +215,7 @@ export default class App extends React.Component {
           <Stack.Screen name="Signup" component={SignUpPage} />
           <Stack.Screen name="Login" component={LogInScreen} />
           <Stack.Screen name="Tutorial" component={TutorialScreen} />
-          
+          <Stack.Screen name="LogFood" component={LogFoodScreen} />
           <Stack.Screen name="Main" component={MainScreen} />
           <Stack.Screen name="NewContainer" component={NewContainerScreen} />
           <Stack.Screen name="ExpandContainer" component={ExpandContainerScreen} />

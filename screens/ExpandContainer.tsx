@@ -92,10 +92,10 @@ function ExpandContainerScreen({ route, navigation }) {
   const renderItem = ({ item }: { item: ItemProduct }) => {
 
     return (
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginRight: 10}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginRight: 15}}>
 
 
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 10, marginTop: 20}}>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 20, marginTop: 20}}>
         <View>
           <Image
             source={require('../assets/images/categories/tomatoes.png')}
@@ -172,7 +172,7 @@ function ExpandContainerScreen({ route, navigation }) {
   //               style={{
   //                 justifyContent: 'center',
   //                 alignContent: 'center',
-  //                 borderWidth: 1,
+  //                 border Width: 1,
   //                 backgroundColor: '#FBFEFB',
   //                 borderRadius: 37,
   //                 width: 25,
@@ -221,8 +221,8 @@ function ExpandContainerScreen({ route, navigation }) {
             height: -1,
             width: 0,
           },
-          shadowOpacity: 0.25,
-          shadowRadius: 17,
+          shadowOpacity: 0.15,
+          shadowRadius: 20,
         }}
       >
         {/* buttons */}
@@ -351,8 +351,9 @@ function ExpandContainerScreen({ route, navigation }) {
           <Text style={[styles.description, styles.regularFont, { width: '80%' }]}>Lorem ipsum dolor sit amet, - container desc here, have max # of chars </Text>
         </View>
       </SafeAreaView>
-      <View style={{}}>
+      <View style={{height: '100%'}}>
         <FlatList
+
           data={itemData.foodList}
           renderItem={renderItem}>
 

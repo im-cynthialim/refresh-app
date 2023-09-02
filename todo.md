@@ -34,6 +34,8 @@ Tutorial:
 
 ### To Do
 
+- fix progress bar (it's not even complete)
+- showing food list when one is added (so need to add "Add food" button) + also learn about scrollview
 - Back button navigation a bit flawed when calling prev screen
 - figure out flow for undefined user(in case Tutorial page beings without signup (can use if statement in signup area?))
     |_ **fixed** but page animation isn't correct
@@ -72,6 +74,8 @@ Expand Container:
 ### To Do
 
 - Add filter button + filter
+- Remove line with opacity (like done with model display when option is blank) also need to configure display based on factors selected
+- Fix tag images, should be based on product category
 
 ### Additional
 
@@ -81,7 +85,7 @@ Expand Container:
 
 - design search bar
 <!-- - figure out store and data management -->
-- implement **container-specific** data in expand container page
+~~- implement **container-specific** data in expand container page~~
 - welcome page before tutorial w explanation
 - option to skip tut (flow will include empty container)
 - history of where food has been stored (and for how long)

@@ -639,8 +639,9 @@ function TutorialScreen({ route, navigation }) {
             <Text style={[styles.smalltext, styles.textDefault, { color: '#B0B6B3', textAlign: 'center', marginBottom: 16 }]}>
               Add some foods to store in your {"\n"} new container
             </Text>
+            <View style={[styles.horizontalRule]} />
           </View>
-
+          
           {/* product line */}
           {/* <View style={{alignItems: 'flex-start'}}> */}
 
@@ -708,10 +709,11 @@ function TutorialScreen({ route, navigation }) {
                 value={productQuantity}
                 onChangeText={text => numberField(text)}
                 style={{
+                  textAlign: 'right',
                   fontFamily: 'Rubik-Medium',
                   backgroundColor: "#F2F2F2",
                   color: '#052B2D',
-                  paddingHorizontal: 12,
+                  paddingHorizontal: 15,
                   borderRadius: 3,
                   justifyContent: 'center',
                   paddingVertical: 14,
@@ -756,7 +758,7 @@ function TutorialScreen({ route, navigation }) {
 
           </View>
           {/* date line */}
-          <View style={{ paddingHorizontal: '2%', alignSelf: 'flex-start', paddingLeft: 40, flexDirection: 'row', gap: 20 }}>
+          <View style={{  alignSelf: 'flex-start', paddingHorizontal: 40, flexDirection: 'row', gap: 20 }}>
             <View style={{ width: '30%' }}>
               <TextLabel label="date bought" />
 
@@ -994,7 +996,8 @@ function TutorialScreen({ route, navigation }) {
 
   return (
     <Tutorial.Navigator
-      initialRouteName="ContainerSetup-1"
+      // initialRouteName="ContainerSetup-1"
+      initialRouteName="FoodSetup"
       screenOptions={{
         headerShown: false
       }}>
