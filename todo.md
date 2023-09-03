@@ -82,6 +82,19 @@ Expand Container:
 
 ### Notes
 
+Log Food:
+
+### To Do
+
+- Set up modal (and when it closes, what happens?)
+- Display/notification for foods added (same for tut page)
+
+### Additional
+
+### Notes
+
+
+
 ## Tasks:
 
 - design search bar
