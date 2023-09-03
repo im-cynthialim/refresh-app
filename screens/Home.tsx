@@ -23,6 +23,7 @@ export function HomeScreen({ route, navigation }) {
         // const retrieveContentRef = ref(db, '/userprofiles/'+ JSON.stringify(userId) + '/containers');
         const retrieveContentRef = ref(db, '/userprofiles/' + JSON.stringify(userId) + '/containers');
 
+
           onValue (retrieveContentRef, (snapshot) => {
             const dataList = [];
             snapshot.forEach((childSnapshot) => {

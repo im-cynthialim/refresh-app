@@ -16,6 +16,7 @@ Main:
 
 ### To Do
 
+- pull down to refresh and update data
 - replace all SafeAreaViews with insets: https://reactnavigation.org/docs/handling-safe-area
 - working search bar + new window (or modal) for search results
 - settings popup

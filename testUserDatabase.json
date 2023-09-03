@@ -1,4 +1,5 @@
 {
+  "userprofiles" : {
   "\"ggk5XMzic6bKuVUGPe5A0njMwzD3\"": {
     "containers": {
       "\"FREEZER\"": {
@@ -93,4 +94,5 @@
       }
     }
   }
+}
 }

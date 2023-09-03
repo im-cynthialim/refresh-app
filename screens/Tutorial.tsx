@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { getDatabase, ref, set, push, update} from 'firebase/database';
+import { getDatabase, ref, set, push, update, child} from 'firebase/database';
 import WheelPicker from 'react-native-wheely';
 import { CheckBox, Icon } from '@rneui/themed';
 import ConfettiCannon from 'react-native-confetti-cannon';
@@ -47,7 +47,7 @@ function TutorialScreen({ route, navigation }) {
     const db = getDatabase();
     // if user has been defined (aka gone through proper signup)
     if (userId) {
-      const foodData = 
+      const foodData =
         [
           {
         productName: productName,
@@ -60,10 +60,12 @@ function TutorialScreen({ route, navigation }) {
         personalNotes: personalNotes
           }
         ]
+        
         const updates = {};
-        updates ['userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList'] = foodData;
-        navigation.navigate("Main", {screen: "Home", params: {userId: userId}})
-        return update(ref(db), updates);    
+        updates['userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList'] = foodData;
+        navigation.navigate("Main", { screen: "Home", params: { userId: userId } })
+        return update(ref(db), updates);
+       
     }
 
     else {
@@ -997,7 +999,7 @@ function TutorialScreen({ route, navigation }) {
   return (
     <Tutorial.Navigator
       // initialRouteName="ContainerSetup-1"
-      initialRouteName="FoodSetup"
+      initialRouteName="ContainerSetup-1"
       screenOptions={{
         headerShown: false
       }}>
