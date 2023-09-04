@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import type { PropsWithChildren } from 'react';
 import type { ViewStyle } from 'react-native';
 import Modal from "react-native-modal";
-import { Text, TextInput, View, Image, Pressable, ScrollView } from 'react-native';
+import { Text, TextInput, View, Image, Pressable, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
@@ -46,38 +46,38 @@ function TutorialScreen({ route, navigation }) {
     const db = getDatabase();
     // if user has been defined (aka gone through proper signup)
     if (userId) {
-        const foodData =
-        {
-            productName: productName,
-            productType: productType,
-            productQuantity: productQuantity,
-            productCategory: productCategory,
-            dateBought: dateBought,
-            dateStored: dateStored,
-            dateOpened: dateOpened,
-            personalNotes: personalNotes
-        };
+      const foodData =
+      {
+        productName: productName,
+        productType: productType,
+        productQuantity: productQuantity,
+        productCategory: productCategory,
+        dateBought: dateBought,
+        dateStored: dateStored,
+        dateOpened: dateOpened,
+        personalNotes: personalNotes
+      };
 
-        const foodListRef = ref(db, '/userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList');
-        var length = 0;
-        onValue(foodListRef, (snapshot) => {
-            snapshot.forEach(() => {
-                length++;
-            })
-            return(length)
-        });
+      const foodListRef = ref(db, '/userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList');
+      var length = 0;
+      onValue(foodListRef, (snapshot) => {
+        snapshot.forEach(() => {
+          length++;
+        })
+        return (length)
+      });
 
-        const updates = {};
-        updates['userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList/' + length] = foodData;
+      const updates = {};
+      updates['userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList/' + length] = foodData;
 
-        return update(ref(db), updates);
+      return update(ref(db), updates);
     }
 
     else {
-        navigation.navigate("Login")
+      navigation.navigate("Login")
     }
 
-}
+  }
 
   function ContainerSetup1({ route, navigation }) {
     const { userId } = route.params;
@@ -604,6 +604,8 @@ function TutorialScreen({ route, navigation }) {
     const [cModalVisibility, setCModalVisibility] = useState(false);
     const [foodSetupModalVisibility, setFoodSetupModalVisibility] = useState(false);
 
+    const [curFoodList, setCurFoodList] = useState([]);
+    const db = getDatabase();
 
     const categoryTags = [
       { key: '1', value: ' ' },
@@ -618,274 +620,220 @@ function TutorialScreen({ route, navigation }) {
       if (/^[0-9]+$/.test(text) || text === '') {
         setProductQuantity(text);
       }
-
-
     }
 
-    return (
-      <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
-        {/* progress bar */}
-        <View style={{ flexDirection: 'row', paddingTop: 12, justifyContent: 'center', gap: 5 }}>
-          <View style={{ borderRadius: 64, backgroundColor: '#052B2D', width: '30%' }} />
+    function retrieveContent(userId) {
+    
+      return new Promise((resolve, reject) => {
+        // setRefreshData(!refreshData);
+        if (userId) {
+          // setRefreshing(true);
+          // console.log(JSON.stringify(userId))
+          // const retrieveContentRef = ref(db, '/userprofiles/{"userId":"sEXeq7pzI7X7DhPG4MyQw97p9HF2"}/containers');
+          // const retrieveContentRef = ref(db, '/userprofiles/'+ JSON.stringify(userId) + '/containers');
+          const retrieveContentRef = ref(db, '/userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList/');
+  
+  
+            onValue (retrieveContentRef, (snapshot) => {
+              const dataList = [];
+              snapshot.forEach((childSnapshot) => {
+                const childData = childSnapshot.val();
+                dataList.push(childData);
 
-          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%' }}>
-            <View style={{ zIndex: 1, borderRadius: 64, backgroundColor: '#052B2D', width: '30%', height: 10 }} />
+                // console.log(childData)
+              })
+  
+              
+              resolve(dataList);
+              // setRefreshing(false);
+              // setTimeout(() => {
+              //   setRefreshing(false);
+              // }, 2000);
+          });
+        }
+  
+        else {
+              reject(new Error('User does not exist'));
+        }
+         
+        });
+    }
+  
+    useEffect(() => {
+      async function getData() {
+        try {
+          const data = await (retrieveContent(userId));
+          // console.log(data.containerTemp);
+          setCurFoodList(data);
+         
+          
+          // return data;
+        }
+        catch (error) {
+          console.log("error")
+        }
+      }
+  
+      getData();
+    }, [userId]);
+
+    type ProductData = {
+      productName: string;
+      productType: string;
+      productQuantity: number;
+      productCategory: string;
+      dateBought: string;
+      dateStored: string;
+      dateOpened: string;
+      personalNotes: string;
+    }
+
+    const renderFoodList = ({ item }: { item: ProductData }) => {
+      console.log ("called render: " + item.productName);
+      return (
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginRight: 15}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 20, marginTop: 20}}>
+  
+          <View style={{ paddingLeft: 20, gap: 7, width: 'auto' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+              <Text style={[styles.textDefault, { color: '#021E20', fontSize: 18 }]}>
+                {item.productName}
+              </Text>
+  
+              <Image
+                source={require('../assets/images/raw-tag.png')}
+                style={{width: 30, height: 15, resizeMode: 'center'}}
+              />
+            </View>
+  
+            <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+              {item.dateStored}
+            </Text>
+  
+            <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+              EXPIRY DATE HERE
+            </Text>
+  
+            <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+              Date Opened : {item.dateOpened}
+            </Text>
+  
+            <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+              Date Bought: {item.dateBought}
+            </Text>
+  
           </View>
-          <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%', height: 10 }} />
+        </View>
+  
+          <View style={{marginTop: 20}}>
+            <Text style={[styles.textDefault, styles.label, {color: "#021E20", fontSize: 18 }]}>
+              {item.productQuantity}
+            </Text>
+  
+          </View>
+  
+      </View>
+      );
+  };
 
+  return (
+    <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
+      {/* progress bar */}
+      <View style={{ flexDirection: 'row', paddingTop: 12, justifyContent: 'center', gap: 5 }}>
+        <View style={{ borderRadius: 64, backgroundColor: '#052B2D', width: '30%' }} />
+
+        <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%' }}>
+          <View style={{ zIndex: 1, borderRadius: 64, backgroundColor: '#052B2D', width: '30%', height: 10 }} />
+        </View>
+        <View style={{ borderRadius: 64, backgroundColor: '#EDEDED', width: '30%', height: 10 }} />
+
+      </View>
+
+      {/* <ScrollView>   */}
+      <View style={{ gap: 25, paddingTop: 30 }}>
+        <View style={{ alignItems: 'center' }}>
+          <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
+            Add your food
+          </Text>
+          <Text style={[styles.smalltext, styles.textDefault, { color: '#B0B6B3', textAlign: 'center', marginBottom: 16 }]}>
+            Add some foods to store in your {"\n"} new container
+          </Text>
+          {/* <View style={[styles.horizontalRule]} /> */}
         </View>
 
-        {/* <ScrollView>   */}
-        <View style={{ gap: 25, paddingTop: 30}}>
-          <View style={{ alignItems: 'center' }}>
-            <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
-              Add your food
+      <View style={{height: '50%'}}>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            data={curFoodList}
+            renderItem={renderFoodList}
+            extraData={this.state}
+          />
+        </View>
+
+        {/* user's food list */}
+        <Pressable
+          style={{ backgroundColor: '#EDEDED', paddingVertical: 17, paddingLeft: 19, paddingRight: 103, alignSelf: 'center', borderRadius: 12 }}
+          onPress={() => setFoodSetupModalVisibility(!foodSetupModalVisibility)}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', }}>
+            <Icon
+              name="plus-circle"
+              type='feather'
+              color="#052B2D"
+              size={18}
+            />
+            <Text
+              style={[styles.textDefault, styles.boldText, { paddingLeft: 10 }]}>
+              Add new food
             </Text>
-            <Text style={[styles.smalltext, styles.textDefault, { color: '#B0B6B3', textAlign: 'center', marginBottom: 16 }]}>
-              Add some foods to store in your {"\n"} new container
-            </Text>
-            {/* <View style={[styles.horizontalRule]} /> */}
           </View>
+        </Pressable>
 
 
 
-          {/* <FlatList> */}
-          {/* user's food list */}
+        <View style={{ marginTop: 20, alignSelf: 'center' }}>
           <Pressable
-            style={{ backgroundColor: '#EDEDED', paddingVertical: 17, paddingLeft: 19, paddingRight: 103, alignSelf: 'center', borderRadius: 12 }}
-            onPress={() => setFoodSetupModalVisibility(!foodSetupModalVisibility)}
+            style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+            onPress={() => navigation.navigate("Main", { screen: "Home", params: { userId: userId } })}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', }}>
-              <Icon
-                name="plus-circle"
-                type='feather'
-                color="#052B2D"
-                size={18}
-              />
-              <Text
-                style={[styles.textDefault, styles.boldText, { paddingLeft: 10 }]}>
-                Add new food
+            <Text
+              style={[styles.textDefault, styles.buttonText]}> Finish </Text>
+          </Pressable>
+        </View>
+
+      </View>
+
+      {/* Food Setup Modal */}
+      <View>
+        <Modal
+          isVisible={foodSetupModalVisibility}
+          animationInTiming={200}
+          style={{ margin: 0 }}
+          backdropOpacity={0.56}
+        // onBackdropPress={() => setFoodSetupModalVisibility(false)}
+        // onSwipeComplete={() => setFoodSetupModalVisibility(false)}
+        // swipeDirection={'down'}
+        >
+          <View style={{ backgroundColor: '#FBFEFB', marginTop: '10%', justifyContent: 'flex-start', paddingTop: '20%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+
+
+            <View style={{ alignItems: 'flex-start' }}>
+              <Text style={[styles.textDefault, styles.subtitle]}>
+                Add your food
               </Text>
             </View>
-          </Pressable>
 
-          
-
-          <View style={{ marginTop: 20, alignSelf: 'center' }}>
-            <Pressable
-              style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-              onPress={() => navigation.navigate("Main", { screen: "Home", params: { userId: userId } })}
-            >
-              <Text
-                style={[styles.textDefault, styles.buttonText]}> Finish </Text>
-            </Pressable>
-          </View>
-
-        </View>
-
-        {/* Food Setup Modal */}
-        <View>
-          <Modal
-            isVisible={foodSetupModalVisibility}
-            animationInTiming={200}
-            style={{ margin: 0 }}
-            backdropOpacity={0.56}
-          // onBackdropPress={() => setFoodSetupModalVisibility(false)}
-          // onSwipeComplete={() => setFoodSetupModalVisibility(false)}
-          // swipeDirection={'down'}
-          >
-            <View style={{ backgroundColor: '#FBFEFB', marginTop: '10%', justifyContent: 'flex-start', paddingTop: '20%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+            <View style={{ gap: 15 }}>
 
 
-              <View style={{ alignItems: 'flex-start' }}>
-                <Text style={[styles.textDefault, styles.subtitle]}>
-                  Add your food
-                </Text>
-              </View>
-
-              <View style={{ gap: 15 }}>
-
-
-                <View style={{ paddingTop: 20, alignSelf: 'flex-start', flexDirection: 'row', gap: 20 }}>
-                  <View style={{ width: '35%' }}>
-                    <TextLabel label="product name" />
-                    <TextInput
-                      placeholder={'Tomatoes'}
-                      placeholderTextColor={'#B0B6B3'}
-                      value={productName}
-                      onChangeText={text => setProductName(text)}
-                      style={{
-                        fontFamily: 'Rubik-Medium',
-                        backgroundColor: "#F2F2F2",
-                        color: '#052B2D',
-                        paddingHorizontal: 12,
-                        borderRadius: 3,
-                        justifyContent: 'center',
-                        paddingVertical: 14,
-                      }}
-                    />
-                  </View>
-                  <View style={{ width: '35%' }}>
-                    <View style={{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }}>
-                      <Text style={[styles.textDefault, { fontSize: 14, color: '#052B2D' }]}>
-                        product type
-                      </Text>
-
-                      <Pressable style={{ paddingLeft: 2 }}
-                        onPress={() => setPTModalVisibility(!ptModalVisibility)}
-                      >
-                        <Icon
-                          name="info"
-                          type='feather'
-                          color="#021E20"
-                          size={15}
-                        />
-
-                      </Pressable>
-                    </View>
-
-                    <TextInput
-                      placeholder={'Tomatoes'}
-                      placeholderTextColor={'#B0B6B3'}
-                      value={productType}
-                      onChangeText={text => setProductType(text)}
-                      style={{
-                        fontFamily: 'Rubik-Medium',
-                        backgroundColor: "#F2F2F2",
-                        color: '#052B2D',
-                        paddingHorizontal: 12,
-                        borderRadius: 3,
-                        justifyContent: 'center',
-                        paddingVertical: 14,
-                      }}
-                    />
-                  </View>
-                  <View style={{ width: '20%' }}>
-                    <TextLabel label="quantity" />
-                    <TextInput
-                      placeholder={'1'}
-                      placeholderTextColor={'#B0B6B3'}
-                      keyboardType='numeric'
-                      value={productQuantity}
-                      onChangeText={text => numberField(text)}
-                      style={{
-                        textAlign: 'right',
-                        fontFamily: 'Rubik-Medium',
-                        backgroundColor: "#F2F2F2",
-                        color: '#052B2D',
-                        paddingHorizontal: 15,
-                        borderRadius: 3,
-                        justifyContent: 'center',
-                        paddingVertical: 14,
-                      }}
-                    />
-                  </View>
-                </View>
-                {/* category line */}
-                <View style={{ alignSelf: 'flex-start' }}>
-                  <View style={{ width: 200 }}>
-                    <View style={{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }}>
-                      <Text style={[styles.textDefault, { fontSize: 14, color: '#052B2D' }]}>
-                        item category
-                      </Text>
-
-                      <Pressable style={{ paddingLeft: 5 }}
-                        onPress={() => setCModalVisibility(!cModalVisibility)}
-                      >
-                        <Icon
-                          name="info"
-                          type='feather'
-                          color="#021E20"
-                          size={15}
-                        />
-
-                      </Pressable>
-                    </View>
-
-                    <SelectList
-                      setSelected={(val) => setProductCategory(val)}
-                      data={categoryTags}
-                      search={false}
-                      fontFamily='Rubik-Medium'
-                      defaultOption={{ key: '1', value: ' ' }}
-                      boxStyles={{ backgroundColor: '#F2F2F2', borderWidth: 0, borderRadius: 3 }}
-                      dropdownStyles={{ backgroundColor: '#F2F2F2', borderWidth: 0, borderRadius: 3 }}
-                      dropdownItemStyles={{ backgroundColor: '#F2F2F2' }}
-                      save="value"
-                    />
-                  </View>
-
-
-                </View>
-                {/* date line */}
-                <View style={{ alignSelf: 'flex-start', flexDirection: 'row', gap: 20 }}>
-                  <View style={{ width: '30%' }}>
-                    <TextLabel label="date bought" />
-
-
-                    {/* <RNDateTimePicker value={new Date()} maximumDate={(new Date().getDate(),  new Date.getMonth() + 1, new Date().getFullYear())} onChange={this.setDateBought} textColor='#B0B6B3' accentColor='#248276' mode="date"/> */}
-
-                    <TextInput
-                      placeholder={'DD/MM/YYYY'}
-                      placeholderTextColor={'#B0B6B3'}
-                      value={dateBought}
-                      onChangeText={text => setDateBought(text)}
-                      style={{
-                        fontFamily: 'Rubik-Medium',
-                        backgroundColor: "#F2F2F2",
-                        color: '#052B2D',
-                        paddingHorizontal: 12,
-                        borderRadius: 3,
-                        justifyContent: 'center',
-                        paddingVertical: 14,
-                      }}
-                    />
-                  </View>
-                  <View style={{ width: '30%' }}>
-                    <TextLabel label="date stored" />
-                    <TextInput
-                      placeholder={'DD/MM/YYYY'}
-                      placeholderTextColor={'#B0B6B3'}
-                      value={dateStored}
-                      onChangeText={text => setDateStored(text)}
-                      style={{
-                        fontFamily: 'Rubik-Medium',
-                        backgroundColor: "#F2F2F2",
-                        color: '#052B2D',
-                        paddingHorizontal: 12,
-                        borderRadius: 3,
-                        justifyContent: 'center',
-                        paddingVertical: 14,
-                      }}
-                    />
-                  </View>
-                  <View style={{ width: '30%' }}>
-                    <TextLabel label="date opened" />
-                    <TextInput
-                      placeholder={'DD/MM/YYYY'}
-                      placeholderTextColor={'#B0B6B3'}
-                      value={dateOpened}
-                      onChangeText={text => setDateOpened(text)}
-                      style={{
-                        fontFamily: 'Rubik-Medium',
-                        backgroundColor: "#F2F2F2",
-                        color: '#052B2D',
-                        paddingHorizontal: 12,
-                        borderRadius: 3,
-                        justifyContent: 'center',
-                        paddingVertical: 14,
-                      }}
-                    />
-                  </View>
-                </View>
-
-                <View style={{ alignSelf: 'flex-start' }}>
-                  <TextLabel label="personal notes" />
+              <View style={{ paddingTop: 20, alignSelf: 'flex-start', flexDirection: 'row', gap: 20 }}>
+                <View style={{ width: '35%' }}>
+                  <TextLabel label="product name" />
                   <TextInput
-                    placeholder={'personal notes'}
+                    placeholder={'Tomatoes'}
                     placeholderTextColor={'#B0B6B3'}
-                    value={personalNotes}
-                    onChangeText={text => addPersonalNotes(text)}
+                    value={productName}
+                    onChangeText={text => setProductName(text)}
                     style={{
                       fontFamily: 'Rubik-Medium',
                       backgroundColor: "#F2F2F2",
@@ -897,196 +845,369 @@ function TutorialScreen({ route, navigation }) {
                     }}
                   />
                 </View>
+                <View style={{ width: '35%' }}>
+                  <View style={{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }}>
+                    <Text style={[styles.textDefault, { fontSize: 14, color: '#052B2D' }]}>
+                      product type
+                    </Text>
 
+                    <Pressable style={{ paddingLeft: 2 }}
+                      onPress={() => setPTModalVisibility(!ptModalVisibility)}
+                    >
+                      <Icon
+                        name="info"
+                        type='feather'
+                        color="#021E20"
+                        size={15}
+                      />
 
+                    </Pressable>
+                  </View>
 
+                  <TextInput
+                    placeholder={'Tomatoes'}
+                    placeholderTextColor={'#B0B6B3'}
+                    value={productType}
+                    onChangeText={text => setProductType(text)}
+                    style={{
+                      fontFamily: 'Rubik-Medium',
+                      backgroundColor: "#F2F2F2",
+                      color: '#052B2D',
+                      paddingHorizontal: 12,
+                      borderRadius: 3,
+                      justifyContent: 'center',
+                      paddingVertical: 14,
+                    }}
+                  />
+                </View>
+                <View style={{ width: '20%' }}>
+                  <TextLabel label="quantity" />
+                  <TextInput
+                    placeholder={'1'}
+                    placeholderTextColor={'#B0B6B3'}
+                    keyboardType='numeric'
+                    value={productQuantity}
+                    onChangeText={text => numberField(text)}
+                    style={{
+                      textAlign: 'right',
+                      fontFamily: 'Rubik-Medium',
+                      backgroundColor: "#F2F2F2",
+                      color: '#052B2D',
+                      paddingHorizontal: 15,
+                      borderRadius: 3,
+                      justifyContent: 'center',
+                      paddingVertical: 14,
+                    }}
+                  />
+                </View>
+              </View>
+              {/* category line */}
+              <View style={{ alignSelf: 'flex-start' }}>
+                <View style={{ width: 200 }}>
+                  <View style={{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }}>
+                    <Text style={[styles.textDefault, { fontSize: 14, color: '#052B2D' }]}>
+                      item category
+                    </Text>
 
+                    <Pressable style={{ paddingLeft: 5 }}
+                      onPress={() => setCModalVisibility(!cModalVisibility)}
+                    >
+                      <Icon
+                        name="info"
+                        type='feather'
+                        color="#021E20"
+                        size={15}
+                      />
 
+                    </Pressable>
+                  </View>
 
-
-
-                {/* pt modal */}
-                <View>
-                  <Modal
-                    isVisible={ptModalVisibility}
-                    animationInTiming={200}
-                    style={{ margin: 0 }}
-                    // backdropColor='rgb(7,7,7)'
-                    backdropOpacity={0.56}
-                    onBackdropPress={() => setPTModalVisibility(false)}
-                    onSwipeComplete={() => setPTModalVisibility(false)}
-                    swipeDirection={'down'}
-                  >
-                    <View style={{ backgroundColor: '#FBFEFB', marginTop: '90%', justifyContent: 'flex-start', paddingTop: '8%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
-
-
-                      <View style={{ alignItems: 'flex-start' }}>
-                        <Text style={[styles.textDefault, styles.subtitle]}>
-                          Product Type
-                        </Text>
-                        <Text style={[styles.regularFont, { paddingTop: 5, fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
-                          To accurately predict food expiry dates, we automatically try to classify the item you're storing
-                        </Text>
-                      </View>
-
-                      <View style={{ paddingVertical: 10, alignItems: 'flex-start' }}>
-                        <Text style={[styles.textDefault, styles.label, { marginBottom: 5 }]}>
-                          Successful classification
-                        </Text>
-                        <Text style={[styles.regularFont, { fontSize: 14, color: '#96979C' }]}>
-                          If classified successfully, the product type will display the food name or that of a similar item
-                        </Text>
-                      </View>
-
-                      <View>
-                        <Text style={[styles.textDefault, styles.label, { marginBottom: 5 }]}>
-                          Manual entry
-                        </Text>
-                        <Text style={[styles.regularFont, { fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
-                          If the product type field is left empty, manually enter the food name or a similar item
-                        </Text>
-                      </View>
-
-                      <View style={{ alignItems: 'center', paddingTop: 10 }}>
-                        <Pressable
-                          style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-                          onPress={() => setPTModalVisibility(false)}
-                        >
-                          <Text
-                            style={[styles.textDefault, styles.buttonText]}> Close </Text>
-                        </Pressable>
-                      </View>
-
-                    </View>
-
-                  </Modal>
+                  <SelectList
+                    setSelected={(val) => setProductCategory(val)}
+                    data={categoryTags}
+                    search={false}
+                    fontFamily='Rubik-Medium'
+                    defaultOption={{ key: '1', value: ' ' }}
+                    boxStyles={{ backgroundColor: '#F2F2F2', borderWidth: 0, borderRadius: 3 }}
+                    dropdownStyles={{ backgroundColor: '#F2F2F2', borderWidth: 0, borderRadius: 3 }}
+                    dropdownItemStyles={{ backgroundColor: '#F2F2F2' }}
+                    save="value"
+                  />
                 </View>
 
-                {/* category modal */}
-                <View>
-                  <Modal
-                    isVisible={cModalVisibility}
-                    animationInTiming={200}
-                    style={{ margin: 0 }}
-                    // backdropColor='rgb(7,7,7)'
-                    backdropOpacity={0.56}
-                    onBackdropPress={() => setCModalVisibility(false)}
-                    onSwipeComplete={() => setCModalVisibility(false)}
-                    swipeDirection={'down'}
-                  >
-                    <View style={{ backgroundColor: '#FBFEFB', marginTop: '75%', justifyContent: 'flex-start', paddingTop: '8%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
-
-                      <Text style={[styles.textDefault, styles.subtitle]}>
-                        Item Category
-                      </Text>
-                      <Text style={[styles.regularFont, { paddingTop: 5, paddingBottom: 15, fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
-                        Indicate the state of foods in your container with one of the following tags
-                      </Text>
-
-                      <View style={{ gap: 10 }}>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Image
-                            source={require('../assets/images/raw-tag.png')}
-                            style={{ width: 120, height: 55, resizeMode: 'center' }}
-                          />
-                          <View style={{ paddingLeft: '5%' }}>
-                            <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Raw Food </Text>
-                            <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C', width: '50%' }]}>Includes items such as fresh produce and uncooked meat </Text>
-                          </View>
-                        </View>
-
-                        <View style={{ flexDirection: 'row' }}>
-                          <Image
-                            source={require('../assets/images/cooked-tag.png')}
-                            style={{ width: 120, height: 55, resizeMode: 'center' }}
-                          />
-                          <View style={{ paddingLeft: '5%' }}>
-                            <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Cooked Food </Text>
-                            <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C' }]}>Includes all cooked items </Text>
-                          </View>
-                        </View>
-
-                        <View style={{ flexDirection: 'row' }}>
-                          <Image
-                            source={require('../assets/images/meal-tag.png')}
-                            style={{ width: 120, height: 55, resizeMode: 'center' }}
-                          />
-                          <View style={{ paddingLeft: '5%' }}>
-                            <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Meal </Text>
-                            <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C', width: '40%' }]}>Includes items composed of multiple foods, such as yesterday's pasta dinner </Text>
-                          </View>
-                        </View>
-
-                      </View>
-
-                      <View style={{ alignItems: 'center', paddingTop: 20 }}>
-                        <Pressable
-                          style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
-                          onPress={() => setCModalVisibility(false)}
-                        >
-                          <Text
-                            style={[styles.textDefault, styles.buttonText]}> Close </Text>
-                        </Pressable>
-                      </View>
-
-                    </View>
-
-                  </Modal>
-
-                </View>
-
-                <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Pressable
-                // FIXME:
-                    style={({ pressed }) => [{ backgroundColor: pressed ? '#EDEDED' : '#FBFEFB' }, styles.smaller_button, {borderWidth: 1, borderColor: '#248276'}]}
-                    onPress={() => setFoodSetupModalVisibility(!foodSetupModalVisibility)}
-                  >
-                    <Text
-                      style={[styles.textDefault, styles.buttonText, {color: '#248276'}]}> Cancel </Text>
-                  </Pressable>
-                  <Pressable
-                    style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.smaller_button]}
-                    onPress={() => {addFood(productName, productType, productQuantity, productCategory, dateBought, dateStored, dateOpened, personalNotes, containerName, userId); setFoodSetupModalVisibility(!foodSetupModalVisibility); 
-                      setProductName("");
-                      setProductType("");
-                      setProductQuantity("");
-                      setProductCategory("");
-                      setDateBought("");
-                      setDateStored("");
-                      setDateOpened("");
-                      addPersonalNotes("");
-                    }}>
-                    <Text
-                      style={[styles.textDefault, styles.buttonText]}> Add </Text>
-                  </Pressable>
-                </View>
 
               </View>
+              {/* date line */}
+              <View style={{ alignSelf: 'flex-start', flexDirection: 'row', gap: 20 }}>
+                <View style={{ width: '30%' }}>
+                  <TextLabel label="date bought" />
+
+
+                  {/* <RNDateTimePicker value={new Date()} maximumDate={(new Date().getDate(),  new Date.getMonth() + 1, new Date().getFullYear())} onChange={this.setDateBought} textColor='#B0B6B3' accentColor='#248276' mode="date"/> */}
+
+                  <TextInput
+                    placeholder={'DD/MM/YYYY'}
+                    placeholderTextColor={'#B0B6B3'}
+                    value={dateBought}
+                    onChangeText={text => setDateBought(text)}
+                    style={{
+                      fontFamily: 'Rubik-Medium',
+                      backgroundColor: "#F2F2F2",
+                      color: '#052B2D',
+                      paddingHorizontal: 12,
+                      borderRadius: 3,
+                      justifyContent: 'center',
+                      paddingVertical: 14,
+                    }}
+                  />
+                </View>
+                <View style={{ width: '30%' }}>
+                  <TextLabel label="date stored" />
+                  <TextInput
+                    placeholder={'DD/MM/YYYY'}
+                    placeholderTextColor={'#B0B6B3'}
+                    value={dateStored}
+                    onChangeText={text => setDateStored(text)}
+                    style={{
+                      fontFamily: 'Rubik-Medium',
+                      backgroundColor: "#F2F2F2",
+                      color: '#052B2D',
+                      paddingHorizontal: 12,
+                      borderRadius: 3,
+                      justifyContent: 'center',
+                      paddingVertical: 14,
+                    }}
+                  />
+                </View>
+                <View style={{ width: '30%' }}>
+                  <TextLabel label="date opened" />
+                  <TextInput
+                    placeholder={'DD/MM/YYYY'}
+                    placeholderTextColor={'#B0B6B3'}
+                    value={dateOpened}
+                    onChangeText={text => setDateOpened(text)}
+                    style={{
+                      fontFamily: 'Rubik-Medium',
+                      backgroundColor: "#F2F2F2",
+                      color: '#052B2D',
+                      paddingHorizontal: 12,
+                      borderRadius: 3,
+                      justifyContent: 'center',
+                      paddingVertical: 14,
+                    }}
+                  />
+                </View>
+              </View>
+
+              <View style={{ alignSelf: 'flex-start' }}>
+                <TextLabel label="personal notes" />
+                <TextInput
+                  placeholder={'personal notes'}
+                  placeholderTextColor={'#B0B6B3'}
+                  value={personalNotes}
+                  onChangeText={text => addPersonalNotes(text)}
+                  style={{
+                    fontFamily: 'Rubik-Medium',
+                    backgroundColor: "#F2F2F2",
+                    color: '#052B2D',
+                    paddingHorizontal: 12,
+                    borderRadius: 3,
+                    justifyContent: 'center',
+                    paddingVertical: 14,
+                  }}
+                />
+              </View>
+
+
+
+
+
+
+
+
+              {/* pt modal */}
+              <View>
+                <Modal
+                  isVisible={ptModalVisibility}
+                  animationInTiming={200}
+                  style={{ margin: 0 }}
+                  // backdropColor='rgb(7,7,7)'
+                  backdropOpacity={0.56}
+                  onBackdropPress={() => setPTModalVisibility(false)}
+                  onSwipeComplete={() => setPTModalVisibility(false)}
+                  swipeDirection={'down'}
+                >
+                  <View style={{ backgroundColor: '#FBFEFB', marginTop: '90%', justifyContent: 'flex-start', paddingTop: '8%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+
+
+                    <View style={{ alignItems: 'flex-start' }}>
+                      <Text style={[styles.textDefault, styles.subtitle]}>
+                        Product Type
+                      </Text>
+                      <Text style={[styles.regularFont, { paddingTop: 5, fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
+                        To accurately predict food expiry dates, we automatically try to classify the item you're storing
+                      </Text>
+                    </View>
+
+                    <View style={{ paddingVertical: 10, alignItems: 'flex-start' }}>
+                      <Text style={[styles.textDefault, styles.label, { marginBottom: 5 }]}>
+                        Successful classification
+                      </Text>
+                      <Text style={[styles.regularFont, { fontSize: 14, color: '#96979C' }]}>
+                        If classified successfully, the product type will display the food name or that of a similar item
+                      </Text>
+                    </View>
+
+                    <View>
+                      <Text style={[styles.textDefault, styles.label, { marginBottom: 5 }]}>
+                        Manual entry
+                      </Text>
+                      <Text style={[styles.regularFont, { fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
+                        If the product type field is left empty, manually enter the food name or a similar item
+                      </Text>
+                    </View>
+
+                    <View style={{ alignItems: 'center', paddingTop: 10 }}>
+                      <Pressable
+                        style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+                        onPress={() => setPTModalVisibility(false)}
+                      >
+                        <Text
+                          style={[styles.textDefault, styles.buttonText]}> Close </Text>
+                      </Pressable>
+                    </View>
+
+                  </View>
+
+                </Modal>
+              </View>
+
+              {/* category modal */}
+              <View>
+                <Modal
+                  isVisible={cModalVisibility}
+                  animationInTiming={200}
+                  style={{ margin: 0 }}
+                  // backdropColor='rgb(7,7,7)'
+                  backdropOpacity={0.56}
+                  onBackdropPress={() => setCModalVisibility(false)}
+                  onSwipeComplete={() => setCModalVisibility(false)}
+                  swipeDirection={'down'}
+                >
+                  <View style={{ backgroundColor: '#FBFEFB', marginTop: '75%', justifyContent: 'flex-start', paddingTop: '8%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+
+                    <Text style={[styles.textDefault, styles.subtitle]}>
+                      Item Category
+                    </Text>
+                    <Text style={[styles.regularFont, { paddingTop: 5, paddingBottom: 15, fontSize: 14, color: '#96979C', textAlign: 'left' }]}>
+                      Indicate the state of foods in your container with one of the following tags
+                    </Text>
+
+                    <View style={{ gap: 10 }}>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Image
+                          source={require('../assets/images/raw-tag.png')}
+                          style={{ width: 120, height: 55, resizeMode: 'center' }}
+                        />
+                        <View style={{ paddingLeft: '5%' }}>
+                          <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Raw Food </Text>
+                          <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C', width: '50%' }]}>Includes items such as fresh produce and uncooked meat </Text>
+                        </View>
+                      </View>
+
+                      <View style={{ flexDirection: 'row' }}>
+                        <Image
+                          source={require('../assets/images/cooked-tag.png')}
+                          style={{ width: 120, height: 55, resizeMode: 'center' }}
+                        />
+                        <View style={{ paddingLeft: '5%' }}>
+                          <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Cooked Food </Text>
+                          <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C' }]}>Includes all cooked items </Text>
+                        </View>
+                      </View>
+
+                      <View style={{ flexDirection: 'row' }}>
+                        <Image
+                          source={require('../assets/images/meal-tag.png')}
+                          style={{ width: 120, height: 55, resizeMode: 'center' }}
+                        />
+                        <View style={{ paddingLeft: '5%' }}>
+                          <Text style={[styles.textDefault, styles.label, { marginBottom: 2 }]}>Meal </Text>
+                          <Text style={[styles.regularFont, { fontSize: 12, color: '#96979C', width: '40%' }]}>Includes items composed of multiple foods, such as yesterday's pasta dinner </Text>
+                        </View>
+                      </View>
+
+                    </View>
+
+                    <View style={{ alignItems: 'center', paddingTop: 20 }}>
+                      <Pressable
+                        style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.next_button]}
+                        onPress={() => setCModalVisibility(false)}
+                      >
+                        <Text
+                          style={[styles.textDefault, styles.buttonText]}> Close </Text>
+                      </Pressable>
+                    </View>
+
+                  </View>
+
+                </Modal>
+
+              </View>
+
+              <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Pressable
+                  // FIXME:
+                  style={({ pressed }) => [{ backgroundColor: pressed ? '#EDEDED' : '#FBFEFB' }, styles.smaller_button, { borderWidth: 1, borderColor: '#248276' }]}
+                  onPress={() => setFoodSetupModalVisibility(!foodSetupModalVisibility)}
+                >
+                  <Text
+                    style={[styles.textDefault, styles.buttonText, { color: '#248276' }]}> Cancel </Text>
+                </Pressable>
+                <Pressable
+                  style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.smaller_button]}
+                  onPress={() => {
+                    addFood(productName, productType, productQuantity, productCategory, dateBought, dateStored, dateOpened, personalNotes, containerName, userId); setFoodSetupModalVisibility(!foodSetupModalVisibility);
+                    setProductName("");
+                    setProductType("");
+                    setProductQuantity("");
+                    setProductCategory("");
+                    setDateBought("");
+                    setDateStored("");
+                    setDateOpened("");
+                    addPersonalNotes("");
+                  }}>
+                  <Text
+                    style={[styles.textDefault, styles.buttonText]}> Add </Text>
+                </Pressable>
+              </View>
+
             </View>
+          </View>
 
-          </Modal>
-        </View>
+        </Modal>
+      </View>
 
-      </SafeAreaView>
-    );
-  };
-
-
-  const Tutorial = createNativeStackNavigator();
-
-  return (
-    <Tutorial.Navigator
-      initialRouteName="ContainerSetup-1"
-      screenOptions={{
-        headerShown: false
-      }}>
-      <Tutorial.Screen name="ContainerSetup-1" component={ContainerSetup1} />
-      <Tutorial.Screen name="ContainerSetup-2" component={ContainerSetup2} />
-      <Tutorial.Screen name="ContainerSetup-3" component={ContainerSetup3} />
-      <Tutorial.Screen name="ContainerSetup-4" component={ContainerSetup4} />
-      <Tutorial.Screen name="FoodSetup" component={FoodSetup} />
-    </Tutorial.Navigator>
+    </SafeAreaView>
   );
+};
+
+
+const Tutorial = createNativeStackNavigator();
+
+return (
+  <Tutorial.Navigator
+    initialRouteName="ContainerSetup-1"
+    screenOptions={{
+      headerShown: false
+    }}>
+    <Tutorial.Screen name="ContainerSetup-1" component={ContainerSetup1} />
+    <Tutorial.Screen name="ContainerSetup-2" component={ContainerSetup2} />
+    <Tutorial.Screen name="ContainerSetup-3" component={ContainerSetup3} />
+    <Tutorial.Screen name="ContainerSetup-4" component={ContainerSetup4} />
+    <Tutorial.Screen name="FoodSetup" component={FoodSetup} />
+  </Tutorial.Navigator>
+);
 }
 
 
