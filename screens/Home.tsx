@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { StyleSheet, Text, FlatList, TextInput, View, Image, Pressable, Button, PressableProps } from 'react-native';
+import { RefreshControl, Text, FlatList, TextInput, View, Image, Pressable, Button, PressableProps } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,11 +13,15 @@ export function HomeScreen({ route, navigation }) {
   const dbRef = ref(getDatabase());
   const [DATA, setDATA] = useState([]);
   const db = getDatabase();
-
+  // const [refreshing, setRefreshing] = useState(false);
+  // const [refreshData, setRefreshData] = useState(false);
 
   function retrieveContent(userId) {
+    
     return new Promise((resolve, reject) => {
+      // setRefreshData(!refreshData);
       if (userId) {
+        // setRefreshing(true);
         // console.log(JSON.stringify(userId))
         // const retrieveContentRef = ref(db, '/userprofiles/{"userId":"sEXeq7pzI7X7DhPG4MyQw97p9HF2"}/containers');
         // const retrieveContentRef = ref(db, '/userprofiles/'+ JSON.stringify(userId) + '/containers');
@@ -32,7 +36,12 @@ export function HomeScreen({ route, navigation }) {
               // console.log(childData)
             })
 
+            
             resolve(dataList);
+            // setRefreshing(false);
+            // setTimeout(() => {
+            //   setRefreshing(false);
+            // }, 2000);
         });
       }
 
@@ -49,6 +58,7 @@ export function HomeScreen({ route, navigation }) {
         const data = await (retrieveContent(userId));
         // console.log(data.containerTemp);
         setDATA(data);
+        
         // return data;
       }
       catch (error) {
@@ -58,47 +68,6 @@ export function HomeScreen({ route, navigation }) {
 
     getData();
   }, [userId]);
-
-  // console.log(DATA);
-
-
-  // const DATA: ItemData[] =[
-  //   {
-  //     name: "Fridge",
-  //     description: "hello",
-  //     products: ["tomato", "lettuce"],
-  //   },
-  // ];
-  //   {
-  //     name: "test2",
-  //     description: "world",
-  //     products: ["cucumber", "toast"],
-  //   },
-  //  {
-  //    name: "test",
-  //    description: "hello",
-  //    products: ["tomato", "lettuce"],
-  // },
-  // {
-  //   name: "",
-  //   description: "na",
-  //   products: ["na"],
-  // }
-  // {
-  //   name: "test",
-  //   description: "hello",
-  //   products: ["tomato", "lettuce", "burger"],
-  // },
-  // {
-  //   name: "test",
-  //   description: "hello",
-  //   products: ["tomato", "lettuce", "burger"],
-  // },
-  // {
-  //   name: "test",
-  //   description: "hello",
-  //   products: ["tomato", "lettuce", "burger"],
-  // },
 
   type ItemData = {
     containerName: string;
@@ -118,6 +87,7 @@ export function HomeScreen({ route, navigation }) {
 
   }
 
+  // console.log(DATA)
   //renders each container from data
   const renderItem = ({ item }: { item: ItemData }) => {
 
@@ -166,7 +136,7 @@ export function HomeScreen({ route, navigation }) {
           horizontal={true}
           data={item.foodList}
           renderItem={renderItemContainer}
-        // keyExtractor={item => item.toString()}
+          
         />
       </View>
 
@@ -315,6 +285,9 @@ export function HomeScreen({ route, navigation }) {
         showsVerticalScrollIndicator={false}
         data={DATA}
         renderItem={renderItem}
+        // extraData={refreshData}
+        // refreshing={true}
+        // onRefresh= {() => setRefreshData(!refreshData)}
         ListFooterComponent={
           NewContainer
         }

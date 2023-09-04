@@ -16,7 +16,9 @@ Main:
 
 ### To Do
 
-- pull down to refresh and update data
+- replace all #248276 colored buttons with lighter accent color (brighter appearance)
+
+- pull down to refresh and update data (look into extraData + onRefresh for Flatlist)
 - replace all SafeAreaViews with insets: https://reactnavigation.org/docs/handling-safe-area
 - working search bar + new window (or modal) for search results
 - settings popup
@@ -34,6 +36,8 @@ Main:
 Tutorial: 
 
 ### To Do
+
+- restrict submission if text inputs empty
 
 - fix progress bar (it's not even complete)
 - showing food list when one is added (so need to add "Add food" button) + also learn about scrollview
@@ -86,6 +90,8 @@ Log Food:
 
 ### To Do
 
+- Adding two foods with the same name does what? (need a subsection - refer to Figma design)
+    - rn it just adds another item because food list length increasing
 - Set up modal (and when it closes, what happens?)
 - Display/notification for foods added (same for tut page)
 

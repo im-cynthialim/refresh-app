@@ -35,6 +35,11 @@ const styles = StyleSheet.create({
         color: '#052B2D',
         marginBottom: 10
       },
+
+      boldText: {
+        fontSize: 14,
+        color: '#052B2D',
+      },
       
       textbox: {
         width: 222,
@@ -59,6 +64,16 @@ const styles = StyleSheet.create({
         width: 147,
         paddingVertical: 10,
         paddingHorizontal: 45, /*FIXME:need to fix!!!*/
+        borderRadius: 12,
+        fontSize: 13,
+    
+      },
+
+      smaller_button: {
+        alignItems: 'center',
+        width: 140,
+        paddingVertical: 10,
+        paddingHorizontal: 25, /*FIXME:need to fix!!!*/
         borderRadius: 12,
         fontSize: 13,
     

@@ -10,58 +10,6 @@ function ExpandContainerScreen({ route, navigation }) {
 
   const { itemData, userId } = route.params;
 
-
-  // type ContainerContents = {
-  //   containername: string;
-  //   products: string[][];
-
-  // }
-
-
-  // const DATA: ItemProduct[] =[
-  //   {
-  //     name: "Fridge",
-  //     description: "hello",
-  //     products: ["tomato", "lettuce"],
-  //   },
-  //   {
-  //     name: "test2",
-  //     description: "world",
-  //     products: ["cucumber", "toast"],
-  //   },
-  //  {
-  //    name: "test",
-  //    description: "hello",
-  //    products: ["tomato", "lettuce"],
-  // },
-  // {
-  //   name: "",
-  //   description: "na",
-  //   products: ["na"],
-  // }
-  // {
-  //   name: "test",
-  //   description: "hello",
-  //   products: ["tomato", "lettuce", "burger"],
-  // },
-  // {
-  //   name: "test",
-  //   description: "hello",
-  //   products: ["tomato", "lettuce", "burger"],
-  // },
-  // {
-  //   name: "test",
-  //   description: "hello",
-  //   products: ["tomato", "lettuce", "burger"],
-  // },
-  // ];
-
-  // type ItemData = {
-  //   name: string;
-  //   description: string;
-  //   products: string[];
-  // };
-
   type ItemProduct = {
     productName: string;
     productType: string;
@@ -73,12 +21,6 @@ function ExpandContainerScreen({ route, navigation }) {
     personalNotes: string;
 
   }
-
-
-  // type ItemProps = {
-  //   item: ItemData;
-  // };
-
 
   type inputData = {
     searchinput: string;

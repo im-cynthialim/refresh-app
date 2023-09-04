@@ -122,7 +122,7 @@ function LogFoodScreen({ navigation }) {
 
             const updates = {};
             updates['userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList/' + length] = foodData;
-            // navigation.navigate("Main", { screen: "Home", params: { userId: userId }})
+            navigation.navigate("Main", { screen: "Home", params: { userId: userId }})
             return update(ref(db), updates);
         }
 
