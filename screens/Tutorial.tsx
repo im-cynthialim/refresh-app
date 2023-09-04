@@ -636,7 +636,7 @@ function TutorialScreen({ route, navigation }) {
         </View>
 
         {/* <ScrollView>   */}
-        <View style={{ gap: 25, paddingTop: 30 }}>
+        <View style={{ gap: 25, paddingTop: 30}}>
           <View style={{ alignItems: 'center' }}>
             <Text style={[styles.subtitle, styles.textDefault, { color: '#021E20', textAlign: 'center', marginBottom: 10 }]}>
               Add your food
@@ -668,7 +668,8 @@ function TutorialScreen({ route, navigation }) {
               </Text>
             </View>
           </Pressable>
-          {/* </FlatList> */}
+
+          
 
           <View style={{ marginTop: 20, alignSelf: 'center' }}>
             <Pressable
@@ -693,7 +694,7 @@ function TutorialScreen({ route, navigation }) {
           // onSwipeComplete={() => setFoodSetupModalVisibility(false)}
           // swipeDirection={'down'}
           >
-            <View style={{ backgroundColor: '#FBFEFB', marginTop: '10%', justifyContent: 'flex-start', paddingTop: '8%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
+            <View style={{ backgroundColor: '#FBFEFB', marginTop: '10%', justifyContent: 'flex-start', paddingTop: '20%', paddingHorizontal: '10%', flex: 1, borderTopLeftRadius: 21, borderTopRightRadius: 21 }}>
 
 
               <View style={{ alignItems: 'flex-start' }}>

@@ -16,6 +16,7 @@ Main:
 
 ### To Do
 
+- make all textinputs empty after submitting info (on all screens applicable)
 - replace all #248276 colored buttons with lighter accent color (brighter appearance)
 
 - pull down to refresh and update data (look into extraData + onRefresh for Flatlist)
