@@ -629,43 +629,43 @@ function TutorialScreen({ route, navigation }) {
         db,
         `/userprofiles/${JSON.stringify(userId)}/containers/${JSON.stringify(containerName)}/foodList/`
       );
-  
-     
+
+
       const handleDataChange = (snapshot) => {
         const dataList = [];
 
         snapshot.forEach((childSnapshot) => {
           const childData = childSnapshot.val();
           dataList.push(childData);
-          console.log(childData);
+
         });
-  
+
         // Update local state with the collected data and mark loading as false
         setCurFoodList(dataList);
-       
+        // console.log(dataList);
         setLoading(false);
       };
-  
+
       // Attach the callback to the Firebase reference
       const unsubscribe = onValue(retrieveContentRef, handleDataChange);
-  
+
       return () => {
         // Unsubscribe from the Firebase reference when the component unmounts
         unsubscribe();
       };
     }, [userId, containerName]);
-  
+
     // Render loading state if data is still loading
     if (loading) {
-    return (
-      console.log("loading")
-    );
+      return (
+        console.log("loading")
+      );
     }
 
     type ProductData = {
       productName: string;
       productType: string;
-      productQuantity: number;
+      productQuantity: string;
       productCategory: string;
       dateBought: string;
       dateStored: string;
@@ -675,48 +675,74 @@ function TutorialScreen({ route, navigation }) {
 
     const renderFoodList = ({ item }: { item: ProductData }) => {
       return (
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginRight: 15}}>
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 20, marginTop: 20}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center', paddingHorizontal: 35, marginRight: 15, paddingTop: 20}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-start'}}>
+            <View style={{alignSelf: 'center'}}>
+              <Pressable
+              onPress={() => {setFoodSetupModalVisibility(!foodSetupModalVisibility); 
+                setProductName(item.productName);
+                setProductType(item.productType);
+                setProductQuantity(item.productQuantity);
+                setProductCategory(item.productCategory);
+                setDateBought(item.dateBought);
+                setDateStored(item.dateStored);
+                setDateOpened(item.dateOpened);
+                addPersonalNotes(item.personalNotes);
+              }}>
   
-          <View style={{ paddingLeft: 20, gap: 7, width: 'auto' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-              <Text style={[styles.textDefault, { color: '#021E20', fontSize: 18 }]}>
-                {item.productName}
-              </Text>
-  
-              <Image
-                source={require('../assets/images/raw-tag.png')}
-                style={{width: 30, height: 15, resizeMode: 'center'}}
+       <Icon
+                name="edit"
+                type='feather'
+                color="#021E20"
+                size={15}
               />
+              <Text style={[styles.regularFont, {fontSize: 10, paddingTop: 2}]}> Edit </Text>
+              </Pressable>
+              </View>
+            <View style={{ paddingLeft: 20, gap: 7, width: 'auto'}}>
+             
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                
+
+                <Text style={[styles.textDefault, { color: '#021E20', fontSize: 18 }]}>
+                  {item.productName}
+                </Text>
+
+                <Image
+                  source={require('../assets/images/raw-tag.png')}
+                  style={{ width: 30, height: 15, resizeMode: 'center' }}
+                />
+              </View>
+
+              <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+                {item.dateStored}
+              </Text>
+
+              <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+                EXPIRY DATE HERE
+              </Text>
+
+              <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+                Date Opened : {item.dateOpened}
+              </Text>
+
+              <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
+                Date Bought: {item.dateBought}
+              </Text>
+
             </View>
-  
-            <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
-              {item.dateStored}
-            </Text>
-  
-            <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
-              EXPIRY DATE HERE
-            </Text>
-  
-            <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
-              Date Opened : {item.dateOpened}
-            </Text>
-  
-            <Text style={[styles.regularFont, { color: "#021E20", fontSize: 10 }]}>
-              Date Bought: {item.dateBought}
-            </Text>
-  
-          </View>
-        </View>
-  
-          <View style={{marginTop: 20}}>
-            <Text style={[styles.textDefault, styles.label, {color: "#021E20", fontSize: 18 }]}>
+            </View>
+
+          <View style={{}}>
+            <Text style={[styles.textDefault, styles.label, { color: "#021E20", fontSize: 18 }]}>
               {item.productQuantity}
             </Text>
-  
+
           </View>
-  
-      </View>
+
+        
+        </View>
+
       );
   };
 
@@ -745,12 +771,12 @@ function TutorialScreen({ route, navigation }) {
           {/* <View style={[styles.horizontalRule]} /> */}
         </View>
 
-      <View style={{height: '50%'}}>
+        <View style={{ height: '50%' }}>
           <FlatList
             showsHorizontalScrollIndicator={false}
             data={curFoodList}
             renderItem={renderFoodList}
-            // extraData={curFoodList}
+          // extraData={curFoodList}
           />
         </View>
 
@@ -1151,7 +1177,7 @@ function TutorialScreen({ route, navigation }) {
                 <Pressable
                   style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.smaller_button]}
                   onPress={() => {
-                    addFood(productName, productType, productQuantity, productCategory, dateBought, dateStored, dateOpened, personalNotes, containerName, userId); 
+                    addFood(productName, productType, productQuantity, productCategory, dateBought, dateStored, dateOpened, personalNotes, containerName, userId);
                     // getData(userId);
                     setFoodSetupModalVisibility(!foodSetupModalVisibility);
                     setProductName("");
