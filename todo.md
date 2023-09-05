@@ -38,6 +38,8 @@ Tutorial:
 
 ### To Do
 
+- edit food list flawed (adds new food)
+- change edit icon (solid fill nicer)
 - restrict submission if text inputs empty
 
 - fix progress bar (it's not even complete)

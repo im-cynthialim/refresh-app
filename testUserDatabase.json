@@ -1,98 +1,104 @@
 {
-  "userprofiles" : {
-  "\"ggk5XMzic6bKuVUGPe5A0njMwzD3\"": {
-    "containers": {
-      "\"FREEZER\"": {
-        "containerName": "FREEZER",
-        "containerTemp": "Freezer Temperature \n(0 °F / -18 °C)",
-        "factorsList": [
-          true,
-          false,
-          true,
-          true,
-          false,
-          false
-        ],
-        "foodList": [
-          {
-            "dateBought": "",
-            "dateOpened": "",
-            "dateStored": "",
-            "personalNotes": "",
-            "productCategory": "1",
-            "productName": "Tomatoes",
-            "productQuantity": "453",
-            "productType": "Tomatoes"
+  "userprofiles": {
+    "\"7oo2sBkHHrOOrWlx8y798Il048C3\"": {
+      "containers": {
+        "\"Freezer\"": {
+          "containerName": "Freezer",
+          "containerTemp": "Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)",
+          "factorsList": [
+            true,
+            false,
+            true,
+            true,
+            false,
+            false
+          ],
+          "foodList": {
+            "-Ndb5tTzdHm6OvIiR6u7": {
+              "dateBought": "",
+              "dateOpened": "",
+              "dateStored": "",
+              "personalNotes": "",
+              "productCategory": "Raw Food",
+              "productName": "Tomatoes",
+              "productQuantity": "5",
+              "productType": "Tomatoes"
+            }
           }
-        ]
+        }
       }
-    }
-  },
-  "\"sEXeq7pzI7X7DhPG4MyQw97p9HF2\"": {
-    "containers": {
-      "\"Freezer\"": {
-        "containerName": "Freezer",
-        "containerTemp": "Freezer Temperature \n(0 °F / -18 °C)",
-        "factorsList": [
-          true,
-          false,
-          true,
-          true,
-          false,
-          false
-        ],
-        "foodList": [
-          {
-            "productName": "Cookies",
-            "productType": "Dough",
-            "productQuantity": "5",
-            "productCategory": "raw",
-            "dateBought": "Aug 10, 2023",
-            "dateStored": "Aug 10, 2023",
-            "dateOpened": "Aug 10, 2023",
-            "personalNotes": "test 123"
-            
-
-          },
-          {
-            "productName": "Bread",
-            "productType": "Dough",
-            "productQuantity": "10",
-            "productCategory": "cooked",
-            "dateBought": "Aug 21, 2023",
-            "dateStored": "Aug 13, 2023",
-            "dateOpened": "Aug 15, 2023",
-            "personalNotes": "hello world"
+    },
+    "\"YJnpLWaanweUmtownyKpcf6BW5B2\"": {
+      "containers": {
+        "\"Freezer\"": {
+          "containerName": "Freezer",
+          "containerTemp": "Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)",
+          "factorsList": [
+            true,
+            false,
+            true,
+            true,
+            false,
+            false
+          ],
+          "foodList": {
+            "-Ndb4nvfeoKXFtnEwFzs": {
+              "dateBought": "",
+              "dateOpened": "",
+              "dateStored": "",
+              "personalNotes": "",
+              "productCategory": "Raw Food",
+              "productName": "Cheese",
+              "productQuantity": "34",
+              "productType": "Dough"
+            },
+            "-Ndb4poER0wL-ly4TVkD": {
+              "dateBought": "",
+              "dateOpened": "",
+              "dateStored": "",
+              "personalNotes": "",
+              "productCategory": "Cooked Food",
+              "productName": "Bread",
+              "productQuantity": "3",
+              "productType": "Dough"
+            }
           }
-        ]
-      },
-      "\"Fridge\"": {
-        "containerName": "Fridge",
-        "containerTemp": "Fridge Temperature (35-38 °F / 1.6-3.3 °C)",
-        "foodList": [
-          {
-            "productName": "Potatoes",
-            "productType": "Potatoes",
-            "productQuantity": "11234",
-            "productCategory": "raw",
-            "dateBought": "Aug 21, 2023",
-            "dateStored": "Aug 13, 2023",
-            "dateOpened": "Aug 15, 2023",
-            "personalNotes": "hello world"
-          },
-          {
-            "productName": "Tomatoes",
-            "productType": "Tomatoes",
-            "productQuantity": "20",
-            "productCategory": "raw",
-            "dateBought": "Aug 21, 2023",
-            "dateStored": "Aug 13, 2023",
-            "dateOpened": "Aug 15, 2023",
-            "personalNotes": "hello world 1234"
+        },
+        "\"Fridge\"": {
+          "containerName": "Fridge",
+          "containerTemp": "Fridge Temperature \n(35-38 °F / 1.6-3.3 °C)",
+          "factorsList": [
+            true,
+            false,
+            true,
+            true,
+            false,
+            false
+          ],
+          "foodList": {
+            "-Ndb4Cy6uRLp9jB0G839": {
+              "dateBought": "Yesterday",
+              "dateOpened": "Today",
+              "dateStored": "Yesterday",
+              "personalNotes": "",
+              "productCategory": "Raw Food",
+              "productName": "Tomatoes",
+              "productQuantity": "3",
+              "productType": "Tomatoes"
+            },
+            "-Ndb4HH8LpotJhgnImw6": {
+              "dateBought": "Yesterday",
+              "dateOpened": "Today",
+              "dateStored": "Today",
+              "personalNotes": "",
+              "productCategory": "Raw Food",
+              "productName": "Potatoes",
+              "productQuantity": "3",
+              "productType": "Potatoes"
+            }
           }
-        ]
+        }
       }
     }
   }
-}
 }

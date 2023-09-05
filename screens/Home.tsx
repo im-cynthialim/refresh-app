@@ -12,13 +12,14 @@ export function HomeScreen({ route, navigation }) {
   const { userId } = route.params;
   const dbRef = ref(getDatabase());
   const [DATA, setDATA] = useState([]);
+  const [foodListData, setFoodListData] = useState([]);
   const db = getDatabase();
   // const [refreshing, setRefreshing] = useState(false);
   // const [refreshData, setRefreshData] = useState(false);
 
-  function retrieveContent(userId) {
-    
-    return new Promise((resolve, reject) => {
+  function retrieveData(userId) {
+    useEffect(() => {
+    const retrieveContent = new Promise((resolve, reject) => {
       // setRefreshData(!refreshData);
       if (userId) {
         // setRefreshing(true);
@@ -27,21 +28,17 @@ export function HomeScreen({ route, navigation }) {
         // const retrieveContentRef = ref(db, '/userprofiles/'+ JSON.stringify(userId) + '/containers');
         const retrieveContentRef = ref(db, '/userprofiles/' + JSON.stringify(userId) + '/containers');
 
-
           onValue (retrieveContentRef, (snapshot) => {
+
             const dataList = [];
+
             snapshot.forEach((childSnapshot) => {
               const childData = childSnapshot.val();
               dataList.push(childData);
-              // console.log(childData)
+              // console.log(dataList)
             })
 
-            
             resolve(dataList);
-            // setRefreshing(false);
-            // setTimeout(() => {
-            //   setRefreshing(false);
-            // }, 2000);
         });
       }
 
@@ -49,25 +46,22 @@ export function HomeScreen({ route, navigation }) {
             reject(new Error('User does not exist'));
       }
        
-      });
-  }
+    });
 
-  useEffect(() => {
-    async function getData() {
-      try {
-        const data = await (retrieveContent(userId));
-        // console.log(data.containerTemp);
-        setDATA(data);
-        
-        // return data;
-      }
-      catch (error) {
+  
+      Promise.all([retrieveContent])
+      .then(([containerData]) => {
+        setDATA(containerData);
+      })
+      .catch((error) => {
         console.log("error")
-      }
-    }
+      });
+  }, []);
+}
 
-    getData();
-  }, [userId]);
+  retrieveData(userId);
+
+
 
   type ItemData = {
     containerName: string;
@@ -134,7 +128,7 @@ export function HomeScreen({ route, navigation }) {
         <FlatList
           showsHorizontalScrollIndicator={false}
           horizontal={true}
-          data={item.foodList}
+          data={Object.values(item.foodList)}
           renderItem={renderItemContainer}
           
         />
