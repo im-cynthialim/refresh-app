@@ -605,6 +605,7 @@ function TutorialScreen({ route, navigation }) {
     const [foodSetupModalVisibility, setFoodSetupModalVisibility] = useState(false);
 
     const [curFoodList, setCurFoodList] = useState([]);
+    const [loading, setLoading] = useState(true);
     const db = getDatabase();
 
     const categoryTags = [
@@ -622,60 +623,44 @@ function TutorialScreen({ route, navigation }) {
       }
     }
 
-    function retrieveContent(userId) {
-    
-      return new Promise((resolve, reject) => {
-        // setRefreshData(!refreshData);
-        if (userId) {
-          // setRefreshing(true);
-          // console.log(JSON.stringify(userId))
-          // const retrieveContentRef = ref(db, '/userprofiles/{"userId":"sEXeq7pzI7X7DhPG4MyQw97p9HF2"}/containers');
-          // const retrieveContentRef = ref(db, '/userprofiles/'+ JSON.stringify(userId) + '/containers');
-          const retrieveContentRef = ref(db, '/userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList/');
-  
-  
-            onValue (retrieveContentRef, (snapshot) => {
-              const dataList = [];
-              snapshot.forEach((childSnapshot) => {
-                const childData = childSnapshot.val();
-                dataList.push(childData);
 
-                // console.log(childData)
-              })
-  
-              
-              resolve(dataList);
-              // setRefreshing(false);
-              // setTimeout(() => {
-              //   setRefreshing(false);
-              // }, 2000);
-          });
-        }
-  
-        else {
-              reject(new Error('User does not exist'));
-        }
-         
-        });
-    }
-  
     useEffect(() => {
-      async function getData() {
-        try {
-          const data = await (retrieveContent(userId));
-          // console.log(data.containerTemp);
-          setCurFoodList(data);
-         
-          
-          // return data;
-        }
-        catch (error) {
-          console.log("error")
-        }
-      }
+      const retrieveContentRef = ref(
+        db,
+        `/userprofiles/${JSON.stringify(userId)}/containers/${JSON.stringify(containerName)}/foodList/`
+      );
   
-      getData();
-    }, [userId]);
+     
+      const handleDataChange = (snapshot) => {
+        const dataList = [];
+
+        snapshot.forEach((childSnapshot) => {
+          const childData = childSnapshot.val();
+          dataList.push(childData);
+          console.log(childData);
+        });
+  
+        // Update local state with the collected data and mark loading as false
+        setCurFoodList(dataList);
+       
+        setLoading(false);
+      };
+  
+      // Attach the callback to the Firebase reference
+      const unsubscribe = onValue(retrieveContentRef, handleDataChange);
+  
+      return () => {
+        // Unsubscribe from the Firebase reference when the component unmounts
+        unsubscribe();
+      };
+    }, [userId, containerName]);
+  
+    // Render loading state if data is still loading
+    if (loading) {
+    return (
+      console.log("loading")
+    );
+    }
 
     type ProductData = {
       productName: string;
@@ -689,7 +674,6 @@ function TutorialScreen({ route, navigation }) {
     }
 
     const renderFoodList = ({ item }: { item: ProductData }) => {
-      console.log ("called render: " + item.productName);
       return (
         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginRight: 15}}>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 20, marginTop: 20}}>
@@ -766,7 +750,7 @@ function TutorialScreen({ route, navigation }) {
             showsHorizontalScrollIndicator={false}
             data={curFoodList}
             renderItem={renderFoodList}
-            extraData={this.state}
+            // extraData={curFoodList}
           />
         </View>
 
@@ -1167,7 +1151,9 @@ function TutorialScreen({ route, navigation }) {
                 <Pressable
                   style={({ pressed }) => [{ backgroundColor: pressed ? '#156B60' : '#248276' }, styles.smaller_button]}
                   onPress={() => {
-                    addFood(productName, productType, productQuantity, productCategory, dateBought, dateStored, dateOpened, personalNotes, containerName, userId); setFoodSetupModalVisibility(!foodSetupModalVisibility);
+                    addFood(productName, productType, productQuantity, productCategory, dateBought, dateStored, dateOpened, personalNotes, containerName, userId); 
+                    // getData(userId);
+                    setFoodSetupModalVisibility(!foodSetupModalVisibility);
                     setProductName("");
                     setProductType("");
                     setProductQuantity("");
