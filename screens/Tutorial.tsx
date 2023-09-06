@@ -44,6 +44,7 @@ function TutorialScreen({ route, navigation }) {
 
   function addFood(productName, productType, productQuantity, productCategory, dateBought, dateStored, dateOpened, personalNotes, containerName, userId) {
     const db = getDatabase();
+    const newPostKey = push(child(ref(db), '/userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList')).key;
     // if user has been defined (aka gone through proper signup)
     if (userId) {
       const foodData =
@@ -55,11 +56,11 @@ function TutorialScreen({ route, navigation }) {
         dateBought: dateBought,
         dateStored: dateStored,
         dateOpened: dateOpened,
-        personalNotes: personalNotes
+        personalNotes: personalNotes,
+        foodKey: newPostKey
       };
 
       const foodListRef = ref(db, '/userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList');
-      const newPostKey = push(child(ref(db), '/userprofiles/' + JSON.stringify(userId) + '/containers/' + JSON.stringify(containerName) + '/foodList')).key;
       var length = 0;
       onValue(foodListRef, (snapshot) => {
         snapshot.forEach(() => {
@@ -84,8 +85,6 @@ function TutorialScreen({ route, navigation }) {
     const { userId } = route.params;
     const [containerName, setContainerName] = useState('')
     // const db = getDatabase();
-
-
 
     return (
       <SafeAreaView style={{ backgroundColor: '#FBFEFB', height: '100%' }}>
@@ -604,6 +603,7 @@ function TutorialScreen({ route, navigation }) {
     const [ptModalVisibility, setPTModalVisibility] = useState(false);
     const [cModalVisibility, setCModalVisibility] = useState(false);
     const [foodSetupModalVisibility, setFoodSetupModalVisibility] = useState(false);
+    const [foodKey, setFoodKey] = useState('');
 
     const [curFoodList, setCurFoodList] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -672,6 +672,7 @@ function TutorialScreen({ route, navigation }) {
       dateStored: string;
       dateOpened: string;
       personalNotes: string;
+      foodKey: string;
     }
 
     const renderFoodList = ({ item }: { item: ProductData }) => {
@@ -704,6 +705,7 @@ function TutorialScreen({ route, navigation }) {
                 setDateStored(item.dateStored);
                 setDateOpened(item.dateOpened);
                 addPersonalNotes(item.personalNotes);
+                
               }}>
 
               <Icon
@@ -763,9 +765,23 @@ function TutorialScreen({ route, navigation }) {
           <View style={{ alignSelf: 'center' }}>
             <Pressable
             // on Press, find location of item and delete that index in array
-            onPress = {() => remove(ref(db, `/userprofiles/${JSON.stringify(userId)}/containers/${JSON.stringify(containerName)}/foodList/0`))}
+            // onPress = {() => remove(ref(db, `/userprofiles/${JSON.stringify(userId)}/containers/${JSON.stringify(containerName)}/foodList/${JSON.stringify(item.foodKey)}`))}
+            onPress={() => {
+              const dataRef = ref(
+                db,
+                `/userprofiles/${JSON.stringify(userId)}/containers/${JSON.stringify(containerName)}/foodList/` + item.foodKey
+              );
+            
+              remove(dataRef)
+                .then(() => {
+                  console.log('Data removed successfully');
+                })
+                .catch((error) => {
+                  console.error('Error removing data:', error);
+                });
+            }}
             >
-
+            
             <Icon
               name='trash-2'
               type='feather'
